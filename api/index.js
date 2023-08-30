@@ -31,7 +31,7 @@ app.use((req, res, next) => {
   app.use(ErrorHandling);
   // Server
 
-routes.get('^/$|/challenger',(req, res)=>{
+routes.get('^/$|/CapstoneProject',(req, res)=>{
     res.sendFile(path.resolve(__dirname,
         "./static/html/index.html"))
 })
