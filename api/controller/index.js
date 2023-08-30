@@ -8,10 +8,10 @@ const {users, books} = require('../model')
 routes.get('/users', (req, res)=>{
     users.fetchUsers(req, res)
 })
-routes.get('/users/:id', (req, res)=>{
+routes.get('/user/:id', (req, res)=>{
     users.fetchUser(req, res)
 })
-routes.post('/register',bodyParser.json(),
+routes.post('/register',bodyParser.json(), 
 (req, res)=>{
     users.register(req, res)
 })
@@ -30,52 +30,75 @@ routes.post('/login',
 bodyParser.json(), (req, res)=>{
     users.login(req, res)
 })
-//Book's router
-routes.get('/books', (req, res)=>{
-    books.fetchbooks(req, res)
-})
-routes.get('/books/:id', (req, res)=>{
-    books.fetchbooks(req, res)
-})
-routes.post('/register',bodyParser.json(),
-(req, res)=>{
-    books.register(req, res)
-})
-routes.put('/books/:id', bodyParser.json(),
- (req, res)=>{
-    books.updatebooks(req,res)
-})
+
+// Book's router
+routes.get('/books', (req, res) => {
+    books.fetchBooks(req, res);
+});
+
+routes.get('/book/:id', (req, res) => {
+    books.fetchBook(req, res);
+});
+
+routes.post('/books', bodyParser.json(), (req, res) => {
+    books.addBook(req, res);
+});
+
+routes.put('/book/:id', bodyParser.json(), (req, res) => {
+    books.updateBook(req, res);
+});
+
+routes.delete('/books/:id', (req, res) => {
+    books.deleteBook(req, res);
+});
 routes.patch('/books/:id', bodyParser.json(),
  (req, res)=>{
-    books.updatebooks(req,res)
+    books.updateBook(req,res)
 })
-routes.delete('/books/:id', (req, res)=>{
-    books.delete(req, res)
-})
-//ODER ROUTES
-routes.get('/oders', (req, res)=>{
-    orders.fetchorders(req, res)
-})
-routes.get('/orders/:id', (req, res)=>{
-    orders.fetchorders(req, res)
-})
-routes.post('/add',bodyParser.json(),
-(req, res)=>{
-    orders.add(req, res)
-})
-routes.put('/orders/:id', bodyParser.json(),
- (req, res)=>{
-    orders.updateorders(req,res)
-})
-routes.patch('/orders/:id', bodyParser.json(),
- (req, res)=>{
-    orders.updateorders(req,res)
-})
-routes.delete('/orders/:id', (req, res)=>{
-    orders.delete(req, res)
-})
-// Book Author
 
+// Order's router
+routes.get('/orders', (req, res) => {
+    orders.fetchOrders(req, res); 
+});
+
+routes.get('/orders/:id', (req, res) => {
+    orders.fetchOrder(req, res); 
+});
+
+routes.post('/add', bodyParser.json(), (req, res) => {
+    orders.addOrder(req, res); 
+});
+
+routes.put('/orders/:id', bodyParser.json(), (req, res) => {
+    orders.updateOrder(req, res); 
+});
+
+routes.patch('/orders/:id', bodyParser.json(), (req, res) => {
+    orders.updateOrder(req, res); 
+});
+
+routes.delete('/orders/:id', (req, res) => {
+    orders.deleteOrder(req, res); 
+});
+
+// Book Author's router
+routes.get('/authors', (req, res) => {
+    bookAuth.fetchAuthors(req, res);
+});
+
+routes.post('/authors', bodyParser.json(), (req, res) => {
+    bookAuth.addAuthor(req, res);
+});
+
+routes.put('/authors/:id', bodyParser.json(), (req, res) => {
+    bookAuth.updateAuthor(req, res);
+});
+routes.patch('/authors/:id', bodyParser.json(), (req, res) => {
+    bookAuth.updateAuthor(req, res);
+});
+routes.delete('/authors/:id', (req, res) => {
+    bookAuth.deleteAuthor(req, res);
+});
 
 
 module.exports = {
@@ -83,3 +106,4 @@ module.exports = {
     routes,
     verifyAToken
 }
+ 
