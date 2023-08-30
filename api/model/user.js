@@ -2,7 +2,7 @@ const db = require("../config") //this imprt the db con from config
 const {hash, compare, hashSync} = require('bcrypt')
 const {createToken} = require('../middleware/authentication')
 
-class Users{
+class users{
     fetchUsers(req, res){
         const query = `
         SELECT userID, firstName, lastName,
@@ -37,34 +37,31 @@ class Users{
     }
     login(req, res){    
     }
-     async register(req, res){
-      const data = req.body 
-      //encrypt password
-      data.userPass = await hash(data.userPass, 15)
-      //PAYLOAD means DATA THAT COMES FROM THE USER
-      const user = {
-        emailAdd: data.emailAdd,
-        userPass: data.userPass
+    async register(req, res){
+        const data = req.body 
+        //encrypt password
+        data.userPass = await hash(data.userPass, 15)
+        //PAYLOAD means DATA THAT COMES FROM THE USER
+        const user = {
+          emailAdd: data.emailAdd,
+          userPass: data.userPass
+        }
+        //query
+        const query = `
+        INSERT INTO Users
+        SET ?; 
+        `
+        db.query(query,[data], (err)=>{
+          if(err) throw err
+          //create a token
+          let token = createToken(user) 
+             
+              res.json({
+                  status: res.statusCode,
+                  msg: "You are now registered."
+              })
+        })
       }
-      //query
-      const query = `
-      INSERT INTO Users
-      SET ?; 
-      `
-      db.query(query,[data], (err)=>{
-        if(err) throw err
-        //create a token
-        let token = createToken(user) 
-            // res.cookie("LegitUser", token, {
-            //     maxAge:  3600000,
-            //     httpOnly: true
-            // });
-            res.json({
-                status: res.statusCode,
-                msg: "You are now registered."
-            })
-      })
-    }
     login(req, res) {
         const { emailAdd, userPass } = req.body;
         
@@ -143,4 +140,4 @@ class Users{
         })
     }
 } 
-module.exports = Users
+module.exports = users
