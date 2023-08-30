@@ -1,4 +1,4 @@
-const db = require("../config") //this imprt the db con from config
+const db = require("../config") 
 const {hash, compare, hashSync} = require('bcrypt')
 const {createToken} = require('../middleware/authentication')
 
@@ -113,7 +113,7 @@ class users{
             hashSync(data.userPass, 15)
         }
         const query =`
-        UPDATE User
+        UPDATE Users
         SET ?
         WHERE userID = ?
         `
