@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const {verifyAToken} = require('../middleware/authentication')
 const routes = express.Router()
 //Import all model's objects
-const {users, books} = require('../model')
+const {users, books, orders} = require('../model')
 //User's router
 routes.get('/users', (req, res)=>{
     users.fetchUsers(req, res)
@@ -65,7 +65,7 @@ routes.get('/orders/:id', (req, res) => {
     orders.fetchOrder(req, res); 
 });
 
-routes.post('/add', bodyParser.json(), (req, res) => {
+routes.post('/add-order', bodyParser.json(), (req, res) => {
     orders.addOrder(req, res); 
 });
 
