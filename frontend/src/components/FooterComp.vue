@@ -6,7 +6,7 @@
     <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
       <!-- Left -->
       <div class="me-5 d-none d-lg-block">
-        <span>Get connected with us on social networks:</span>
+        <span>Get connected with us on social networks: </span>
       </div>
       <!-- Left -->
   
@@ -96,7 +96,7 @@
           <!-- Grid column -->
   
           <!-- Grid column -->
-          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4" >
             <!-- Links -->
             <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
             <p><i class="fas fa-home me-3"></i> Hout Bay Cape Town 7806</p>
@@ -115,7 +115,7 @@
     <!-- Section: Links  -->
   
     <!-- Copyright -->
-    <div class="text-center p-4" style="background-color: white;">
+    <div class="text-center p-4" >
       © 2023 Copyright:
       <a class="text-reset fw-bold" href="https://mdbootstrap.com/">InkCascade</a>
     </div>
@@ -135,6 +135,8 @@
 
 .Footer{
     background-color: #3E001F;
+    color: white ;
+    
    
 }
 
