@@ -10,7 +10,8 @@ export default createStore({
     book: null,
     spinner: false,
     token: null,
-    msg: null
+    msg: null,
+    cart: []
   },
   getters: {
   },
@@ -36,7 +37,9 @@ export default createStore({
     setmsg(state, msg){
       state.msg = msg
     },
-
+    addToCart(state, book) {
+      state.cart.push(book);
+    },
   },
   actions: {
     async fetchBooks(context) {
