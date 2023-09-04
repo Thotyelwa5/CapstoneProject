@@ -62,7 +62,7 @@
                         <hr class="my-4">
       
                         <div class="d-flex justify-content-between mb-4">
-                          <h5 class="text-uppercase">items 3</h5>
+                          <h5 class="text-uppercase">Items</h5>
                           <h5>Total amount before shipping</h5>
                         </div>
       
@@ -119,16 +119,11 @@
   
   export default {
     computed: {
-  books() {
-    return this.$store.state.books;
-  },
- },
+        books() {
+      return this.$store.state.books;
+    },
+     },
 
-  data() {
-    return {
-      books: [], 
-    };
-  },
   mounted() {
     this.fetchBooks();
   },

@@ -1,5 +1,6 @@
 <template>
     <div>
+    <div v-if="book">
       <section>
         <div class="container py-5">
           <div class="row justify-content-center">
@@ -55,28 +56,37 @@
         </div>
       </section>
     </div>
+    <div v-else>Processing...</div>
+    </div>
   </template>
   
   <script>
-  export default {
-    computed: {
-      book() {
-        return this.$store.state.books[0];
-      },
+export default {
+  computed: {
+    book() {
+      return this.$store.state.books[0];
     },
-    methods: {
-      addToCart(book) {
-        this.$store.commit('addToCart', book);
-        this.$router.push('/cart');
-      },
+  },
+  methods: {
+    addToCart(book) {
+      this.$store.commit('addToCart', book);
+      this.$router.push('/cart');
     },
-    mounted() {
-      if (!this.book) {
-        this.$store.dispatch("fetchBooks");
+  },
+  watch: {
+    $route(to, from) {
+      if (to.params.bookID !== from.params.bookID) {
+        
+        this.$store.dispatch("fetchBook", to.params.bookID);
       }
     },
-  };
-  </script>
+  },
+  mounted() {
+    const bookID = this.$store.state.book
+    this.$store.dispatch("fetchBook", bookID);
+  },
+};
+</script>
   
   <style scoped>
   

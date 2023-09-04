@@ -23,11 +23,11 @@
     </div>
  
     <h2 class="text-center mt-5">FEATURED PRODUCTS</h2>
-    <section style="background-color: #eee;">
+    <section>
       <div class="container py-5">
         <div class="row">
           <div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
-            <div class="card">
+            <div div class="card h-100">
               <div class="d-flex justify-content-between p-3">
                 <p class="lead mb-0">Today's Special offer</p>
                 <div
@@ -41,12 +41,12 @@
               <div class="card-body">
                 <div class="d-flex justify-content-between">
                   <p class="small"><a href="#!" class="text-muted">Books</a></p>
-                  <p class="small text-danger"><s>R1099</s></p>
+                  <p class="small text-danger"><s>R1400</s></p>
                 </div>
     
                 <div class="d-flex justify-content-between mb-3">
-                  <h5 class="mb-0">HP Notebook</h5>
-                  <h5 class="text-dark mb-0">$999</h5>
+                  <h5 class="mb-0">Huis genoot</h5>
+                  <h5 class="text-dark mb-0">R1200</h5>
                 </div>
     
                 <div class="d-flex justify-content-between mb-2">
@@ -63,7 +63,7 @@
             </div>
           </div>
           <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
-            <div class="card">
+            <div class="card h-100">
               <div class="d-flex justify-content-between p-3">
                 <p class="lead mb-0">Today's Special offer</p>
                 <div
@@ -72,17 +72,17 @@
                   <p class="text-white mb-0 small">x2</p>
                 </div>
               </div>
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/7.webp"
+              <img src="https://i.postimg.cc/kMTPsG3V/thumbnail_(1).jpg"
                 class="card-img-top" alt="Laptop" />
               <div class="card-body">
                 <div class="d-flex justify-content-between">
-                  <p class="small"><a href="#!" class="text-muted">Laptops</a></p>
-                  <p class="small text-danger"><s>$1199</s></p>
+                  <p class="small"><a href="#!" class="text-muted">Books</a></p>
+                  <p class="small text-danger"><s>R1700</s></p>
                 </div>
     
                 <div class="d-flex justify-content-between mb-3">
-                  <h5 class="mb-0">HP Envy</h5>
-                  <h5 class="text-dark mb-0">$1099</h5>
+                  <h5 class="mb-0">Becoming</h5>
+                  <h5 class="text-dark mb-0">R1300</h5>
                 </div>
     
                 <div class="d-flex justify-content-between mb-2">
@@ -99,7 +99,7 @@
             </div>
           </div>
           <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
-            <div class="card">
+            <div class="card h-100">
               <div class="d-flex justify-content-between p-3">
                 <p class="lead mb-0">Today's Special offer</p>
                 <div
@@ -108,17 +108,17 @@
                   <p class="text-white mb-0 small">x3</p>
                 </div>
               </div>
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/5.webp"
+              <img src="https://i.postimg.cc/kGdPm6wY/zgft-7697-g760.0.jpg"
                 class="card-img-top" alt="Gaming Laptop" />
               <div class="card-body">
                 <div class="d-flex justify-content-between">
-                  <p class="small"><a href="#!" class="text-muted">Laptops</a></p>
-                  <p class="small text-danger"><s>$1399</s></p>
+                  <p class="small"><a href="#!" class="text-muted">Books</a></p>
+                  <p class="small text-danger"><s>R2500</s></p>
                 </div>
     
                 <div class="d-flex justify-content-between mb-3">
-                  <h5 class="mb-0">Toshiba B77</h5>
-                  <h5 class="text-dark mb-0">$1299</h5>
+                  <h5 class="mb-0">The hardest fall</h5>
+                  <h5 class="text-dark mb-0">R2300</h5>
                 </div>
     
                 <div class="d-flex justify-content-between mb-2">
