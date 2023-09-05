@@ -62,8 +62,6 @@ class Books {
         SET ?
         WHERE bookID = ?;
         `;
-        // const values = [data.bookTitle, data.category, data.bookUrl, req.params.id];
-
         db.query(query, [req.body, req.params.id], (err) => {
             if (err) throw err;
             res.json({

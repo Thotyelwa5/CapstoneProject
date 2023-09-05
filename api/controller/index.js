@@ -61,7 +61,7 @@ routes.get('/orders', (req, res) => {
     orders.fetchOrders(req, res); 
 });
 
-routes.get('/orders/:id', (req, res) => {
+routes.get('/order/:id', (req, res) => {
     orders.fetchOrder(req, res); 
 });
 
@@ -69,15 +69,15 @@ routes.post('/add-order', bodyParser.json(), (req, res) => {
     orders.addOrder(req, res); 
 });
 
-routes.put('/orders/:id', bodyParser.json(), (req, res) => {
+routes.put('/order/:id', bodyParser.json(), (req, res) => {
     orders.updateOrder(req, res); 
 });
 
-routes.patch('/orders/:id', bodyParser.json(), (req, res) => {
+routes.patch('/order/:id', bodyParser.json(), (req, res) => {
     orders.updateOrder(req, res); 
 });
 
-routes.delete('/orders/:id', (req, res) => {
+routes.delete('/order/:id', (req, res) => {
     orders.deleteOrder(req, res); 
 });
 

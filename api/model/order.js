@@ -1,7 +1,7 @@
 const db = require("../config");
 
 class order {
-    createOrder(res, req) {
+    addOrder(req, res) {
         const data = req.body;
         const query = `
         INSERT INTO Orders
@@ -9,41 +9,68 @@ class order {
         `;
         db.query(query, [data], (err) => {
             if (err) throw err;
-            console.log("Order created successfully.");
+            res.json({
+                status: res.statusCode,
+                msg: "Order item added to cart!"
+            })
         });
     }
 
-    fetchOrders() {
+    fetchOrders(req, res) {
         const query = `
-        SELECT orderID, quantity, userID, bookID, orderDate,totalAmount
+        SELECT orderID, quantity, userID, bookID, oderDATE,totalAmount
         FROM Orders;
+        `;
+        db.query(query, (err, results) => {
+            if (err) throw err;
+            res.json({
+                status: res.statusCode,
+                results
+            })  
+        });
+    }
+
+    fetchOrder(req, res) {
+        const query = `
+        SELECT orderID, quantity, userID, bookID, oderDATE,totalAmount
+        FROM Orders
+        WHERE orderID = '${req.params.id}';;
         `;
         db.query(query, (err, result) => {
             if (err) throw err;
-            console.log("Fetched orders:", result);
+            res.json({
+                status: res.statusCode,
+                result
+            })  
         });
     }
 
-    updateOrder(orderID, newTotalAmount) {
+    updateOrder(req, res) {
         const query = `
         UPDATE Orders
-        SET totalAmount = ?
+        SET ?
         WHERE orderID = ?;
         `;
-        db.query(query, [newTotalAmount, orderID], (err) => {
+        db.query(query, [req.body, req.params.id], (err) => {
             if (err) throw err;
-            console.log("Order updated successfully.");
+            res.json({
+                status: res.statusCode,
+                msg: "Order updated successfully."
+            });
         });
     }
 
-    deleteOrder(orderID) {
+    deleteOrder(req, res) {
         const query = `
         DELETE FROM Orders
         WHERE orderID = ?;
         `;
-        db.query(query, [orderID], (err) => {
+        db.query(query, [req.params.id], (err) => {
             if (err) throw err;
-            console.log("Order deleted successfully.");
+            res.json({
+                status: res.statusCode,
+                msg: "Order deleted successfully."
+            });
         });
     }
 }
