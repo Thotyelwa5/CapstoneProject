@@ -24,7 +24,7 @@ routes.patch('/user/:id', bodyParser.json(),
     users.updateUser(req,res)
 })
 routes.delete('/user/:id', (req, res)=>{
-    users.delete(req, res)
+    users.deleteUser(req, res)
 })
 routes.post('/login',
 bodyParser.json(), (req, res)=>{
@@ -65,7 +65,7 @@ routes.get('/orders/:id', (req, res) => {
     orders.fetchOrder(req, res); 
 });
 
-routes.post('/add', bodyParser.json(), (req, res) => {
+routes.post('/add-order', bodyParser.json(), (req, res) => {
     orders.addOrder(req, res); 
 });
 

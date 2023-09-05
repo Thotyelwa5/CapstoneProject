@@ -1,6 +1,7 @@
 const db = require("../config");
 
 class order {
+
     createOrder() {
         const query = `
         INSERT INTO Orders (orderID, quantity, userID,bookID, orderDate, totalAmount)
