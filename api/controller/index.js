@@ -90,13 +90,13 @@ routes.post('/authors', bodyParser.json(), (req, res) => {
     bookAuth.addAuthor(req, res);
 });
 
-routes.put('/authors/:id', bodyParser.json(), (req, res) => {
+routes.put('/author/:id', bodyParser.json(), (req, res) => {
     bookAuth.updateAuthor(req, res);
 });
-routes.patch('/authors/:id', bodyParser.json(), (req, res) => {
+routes.patch('/author/:id', bodyParser.json(), (req, res) => {
     bookAuth.updateAuthor(req, res);
 });
-routes.delete('/authors/:id', (req, res) => {
+routes.delete('/author/:id', (req, res) => {
     bookAuth.deleteAuthor(req, res);
 });
 

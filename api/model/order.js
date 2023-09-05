@@ -15,7 +15,7 @@ class order {
 
     fetchOrders() {
         const query = `
-        SELECT orderID, userID, orderDate, totalAmount
+        SELECT orderID, quantity, userID, bookID, orderDate,totalAmount
         FROM Orders;
         `;
         db.query(query, (err, result) => {
