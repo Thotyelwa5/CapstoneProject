@@ -109,7 +109,7 @@
 <style scoped>
 
 .Footer{
-    background-color: #3E001F;
+    background-color: white;
     color: white ;
     
    

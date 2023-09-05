@@ -16,7 +16,8 @@
         <div class="icons">
           <router-link to="/cart" class="btn btn-primary">
             <i class="fas fa-cart-shopping"></i></router-link>
-          <i class="fa-solid fa-user"></i>
+            <router-link to="/login" class="btn btn-primary"><i class="fa-solid fa-user">
+            </i></router-link>
         </div>
         <i class="fa-solid far-bars nav-menu-btn" @click="openNavigation"></i>
       </div>
