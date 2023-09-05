@@ -1,12 +1,12 @@
 const db = require("../config");
 
 class order {
-    createOrder(userID, orderDate, totalAmount) {
+    createOrder() {
         const query = `
-        INSERT INTO Orders (userID, orderDate, totalAmount)
+        INSERT INTO Orders (orderID, quantity, userID,bookID, orderDate, totalAmount)
         SET ?;
         `;
-        db.query(query, [userID, orderDate, totalAmount], (err) => {
+        db.query(query, [data.orderID, data.quantity, data.userID, data.bookID, data.totalAmount], (err) => {
             if (err) throw err;
             console.log("Order created successfully.");
         });
@@ -14,7 +14,7 @@ class order {
 
     fetchOrders() {
         const query = `
-        SELECT orderID, userID, orderDate, totalAmount
+        SELECT orderID, quantity, userID, bookID, orderDate,totalAmount
         FROM Orders;
         `;
         db.query(query, (err, result) => {

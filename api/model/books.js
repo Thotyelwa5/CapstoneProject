@@ -2,7 +2,7 @@ const db = require("../config");
 class Books {
     fetchBooks(req, res) {
         const query = `
-        SELECT bookID, bookTitle, category, bookUrl
+        SELECT bookID, bookTitle,amount, category, bookUrl
         FROM Books;
         `;
         db.query(query, (err, results) => {
