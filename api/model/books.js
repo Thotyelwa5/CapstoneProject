@@ -15,7 +15,7 @@ class Books {
     }
     fetchBook(req, res) {
         const query = `
-        SELECT bookID, bookTitle, category, bookUrl
+        SELECT bookID, bookTitle,amount, category, bookUrl
         FROM Books
         WHERE bookID = '${req.params.id}';
         `;
@@ -30,12 +30,11 @@ class Books {
     addBook(req, res) {
         const data = req.body;
         const query = `
-        INSERT INTO Books (bookID, bookTitle, category, bookUrl)
+        INSERT INTO Books
         SET ?;
         `;
-        const values = [data.bookID, data.bookTitle, data.category, data.bookUrl];
         
-        db.query(query, values, (err) => {
+        db.query(query, [data], (err) => {
             if (err) throw err;
             res.json({
                 status: res.statusCode,
@@ -60,12 +59,12 @@ class Books {
         const data = req.body;
         const query = `
         UPDATE Books
-        SET bookTitle = ?, category = ?, bookUrl = ?
+        SET ?
         WHERE bookID = ?;
         `;
-        const values = [data.bookTitle, data.category, data.bookUrl, req.params.id];
+        // const values = [data.bookTitle, data.category, data.bookUrl, req.params.id];
 
-        db.query(query, values, (err) => {
+        db.query(query, [req.body, req.params.id], (err) => {
             if (err) throw err;
             res.json({
                 status: res.statusCode,
