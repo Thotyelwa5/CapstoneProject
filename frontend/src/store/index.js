@@ -16,6 +16,9 @@ export default createStore({
     spinner: false,
     token: null,
     msg: null,
+    user: null,
+    token: null,
+    isLoggedIn: false,
     cart: []
   },
   mutations: {
@@ -40,6 +43,18 @@ export default createStore({
     addToCart(state, book) {
       state.cart.push(book)
     },
+    setUser(state, user) {
+      state.user = user;
+      state.isLoggedIn = true;
+    },
+    setToken(state, token) {
+      state.token = token;
+    },
+    clearUser(state) {
+      state.user = null;
+      state.token = null;
+      state.isLoggedIn = false;
+    },
   },
   actions: {
     async fetchBooks(context) {
@@ -55,38 +70,59 @@ export default createStore({
       try {
         const { data } = await axios.get(`${CapstoneUrl}book/${bookID}`);
         context.commit("setBook", data.result[0]);
-        console.log(data.result);
       } catch (e) {
         context.commit("setMsg", "An error occurred.");
       }
     },
-    async login(context, payload) {
+    async registerUser({ commit }, userData) {
       try {
-        const { msg, token, result } = await axios(`${CapstoneUrl}user/login`);
-        if (result) {
-          context.commit('setUserData', result); 
-          context.commit('setToken', token); 
-          useCookies.set('LegitUser', { token, result });
-          authUser.applyToken(token);
+        const response = await axios.post(`${CapstoneUrl}register`, userData);
+        const user = response.data;
+        commit("setUser", user);
+        if (response.status === 200) {
           sweet({
-            title: msg,
-            text: `Welcome back ${result?.firstName} ${result?.lastname}`, 
             icon: "success",
-            timer: 2000,
+            title: "Registration Successful",
+            text: "You have successfully registered.",
           });
-          router.push({ name: 'home' });
         } else {
           sweet({
-            title: "Error",
-            text: msg,
             icon: "error",
-            timer: 2000,
+            title: "Registration Failed",
+            text: "An error occurred during registration.",
           });
         }
       } catch (error) {
-        console.error("An error occurred during login:", error);
+        sweet({
+          icon: "error",
+          title: "Error",
+          text: error.message,
+        });
       }
-    } 
+    },
+  
+    async loginUser({ commit }, credentials) {
+      try {
+        const response = await axios.post(`${CapstoneUrl}login`, credentials);
+        const { token, user } = response.data;
+        // console.log(response.data);
+        // console.log(token);
+        commit("setToken", token);
+        commit("setUser", user);
+        sweet({
+          icon: "success",
+          title: "Login Successful",
+          text: "You have successfully logged in.",
+        });
+      } catch (error) {
+        sweet({
+          icon: "error",
+          title: "Error",
+          text: error.message,
+        });
+      }
+    }
+
   },
   modules: {} 
 })

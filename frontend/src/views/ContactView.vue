@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 
     <div class="contact">
         <h1>Leave Your Details Below and We'll be in Touch</h1>
@@ -137,4 +137,20 @@ export default{
             max-width: 300px;
         }    
     }
+</style> -->
+<template>
+    <div>
+        
+
+    </div>
+</template>
+
+<script>
+    export default {
+        
+    }
+</script>
+
+<style scoped>
+
 </style>

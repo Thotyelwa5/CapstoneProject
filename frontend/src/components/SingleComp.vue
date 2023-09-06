@@ -63,9 +63,12 @@
   <script>
 export default {
   computed: {
-    book() {
-      return this.$store.state.books[0];
-    },
+      id() {
+        return this.$route.params.bookID
+        },
+        book() {
+          return this.$store.state.book;
+        },
   },
   methods: {
     addToCart(book) {
@@ -73,17 +76,9 @@ export default {
       this.$router.push('/cart');
     },
   },
-  watch: {
-    $route(to, from) {
-      if (to.params.bookID !== from.params.bookID) {
-        
-        this.$store.dispatch("fetchBook", to.params.bookID);
-      }
-    },
-  },
   mounted() {
-    const bookID = this.$store.state.book
-    this.$store.dispatch("fetchBook", bookID);
+
+    this.$store.dispatch("fetchBook", this.id);
   },
 };
 </script>
