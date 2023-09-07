@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="about-page">
     <div class="container">
       <h1 class="text-center fs-1">About Us</h1>
@@ -21,17 +22,25 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
+import NavbarComp from '@/components/NavbarComp.vue';
 export default {
-  name: 'AboutPage'
+  name: 'AboutPage',
+  components:{
+    NavbarComp
+  }
 };
 </script>
 
 <style scoped>
 span{
   background-color: #F4DAF0;
+}
+.about-page{
+  margin-top: 100px;
 }
 .container{
     color:white;
