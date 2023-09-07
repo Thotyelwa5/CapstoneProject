@@ -11,6 +11,7 @@
             <router-link to="/books">Books</router-link>
             <router-link to="/contact">Contact</router-link>
             <router-link to="/admin">Admin</router-link>
+            <router-link to="/register">Register</router-link>
           </div>
         </div>
         <div class="icons">

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="modal">
         <div class="modal-header">
             <h1>Add Products</h1>
@@ -185,4 +185,77 @@ export default {
   position: absolute;
   display: block;
 }
+</style> -->
+
+<template>
+  <div>
+    <h2>Add Book</h2>
+    <input v-model="newBook.bookID" placeholder="bookID" type="number"/>
+    <input v-model="newBook.bookTitle" placeholder="bookTitle"  />
+    <input v-model="newBook.amount" placeholder="amount" type="number" step="0.01"/>
+    <input v-model="newBook.category" placeholder="category" />
+    <input v-model="newBook.bookUrl" placeholder=" bookUrl" />
+    <button @click="addBook">Add Product</button>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+        return {
+            newBook: {
+                bookID: 0,
+                bookTitle: "",
+                amount: 0,
+                category: "",
+                bookUrl: ""
+            }
+        };
+    },
+  methods: {
+      async addBooks() {
+    try {
+      const response = await axios.post('http://localhost:3000/books', this.newBook);
+      alert(response.data.msg); 
+      this.newBook = {
+        data() {
+        return {
+            newBook: {
+                bookID: 0,
+                bookTitle: "",
+                amount: 0,
+                category: "",
+                bookUrl: ""
+            }
+        };
+    },
+      };
+      this.fetchBooks();
+    } catch (error) {
+      console.error("Error adding books:", error);
+    }
+  },
+    resetForm() {
+      // Reset the form after successful add
+      this.newBookID.bookID = 0;
+      this.newBook.bookTitle = "";
+      this.newBook.amount = 0;
+      this.newBook.category= "",
+      this.newBook.bookUrl = ""
+    },
+    populateForm(product) {
+    this.newBookID.bookID = book.bookID;
+    this.newBook.bookTitle = book.bookTitle;
+    this.newBook.amount = book.amount;
+    this.newBook.category = book.category;
+    this.newBook.bookUrl = book.bookUrl;
+  },
+  },
+};
+</script>
+
+<style scoped>
+
 </style>

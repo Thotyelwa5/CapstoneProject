@@ -105,8 +105,6 @@ export default createStore({
       try {
         const response = await axios.post(`${CapstoneUrl}login`, credentials);
         const { token, user } = response.data;
-        // console.log(response.data);
-        // console.log(token);
         commit("setToken", token);
         commit("setUser", user);
         sweet({
