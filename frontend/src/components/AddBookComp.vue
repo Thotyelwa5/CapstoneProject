@@ -27,7 +27,7 @@ export default {
         };
     },
   methods: {
-      async addBooks() {
+      async addBook() {
     try {
       const response = await axios.post('http://localhost:3000/books', this.newBook);
       alert(response.data.msg); 
@@ -50,7 +50,6 @@ export default {
     }
   },
     resetForm() {
-      // Reset the form after successful add
       this.newBookID.bookID = 0;
       this.newBook.bookTitle = "";
       this.newBook.amount = 0;
@@ -69,5 +68,20 @@ export default {
 </script>
 
 <style scoped>
+.form-group {
+  margin-bottom: 15px;
+}
 
+label {
+  font-weight: bold;
+}
+
+.btn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <div class="container py-5">
+      <div class="container py-5 mt-4" >
         <div class="row row-cols-1 row-cols-md-4">
           <div v-for="book in books" :key="book.bookID" class="col mb-4">
             <div class="card h-100" style="border-radius: 15px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
@@ -84,5 +84,12 @@ import CardComp from '@/components/CardComp.vue'
 <style scoped>
 .book-image {
   height: 300px; 
+  transition: transform 0.2s;
+}
+
+.book-image:hover {
+  -ms-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
 }
 </style>

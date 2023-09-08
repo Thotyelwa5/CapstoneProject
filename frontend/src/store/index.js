@@ -50,13 +50,32 @@ export default createStore({
     setToken(state, token) {
       state.token = token;
     },
+    setDeletionStatus(state, status) {
+      state.deletionStatus = status;
+    },
+    setUpdateStatus(state, status) {
+      state.setUpdateStatus = status;
+    },
+    addToCart(state, item) {
+      state.cart.push(item);
+    },
     clearUser(state) {
       state.user = null;
       state.token = null;
       state.isLoggedIn = false;
     },
+    removeFromCart(state, itemToRemove) {
+      state.cart = state.cart.filter((item) => item.bookID !== itemToRemove.bookID);
+    },
+    updateCartItemQuantity(state, { item, quantity }) {
+      const cartItem = state.cart.find((i) => i.bookID === item.bookID);
+      if (cartItem) {
+        cartItem.quantity = quantity;
+      }
+    },
   },
   actions: {
+    // ============fetchBooks and a Book
     async fetchBooks(context) {
       try {
         const { data } = await axios.get(`${CapstoneUrl}books`)
@@ -74,6 +93,45 @@ export default createStore({
         context.commit("setMsg", "An error occurred.");
       }
     },
+    //==============DELETE A BOOK
+    async deleteBook(context, bookID) {
+      try {
+        context.commit("setDeletionStatus", null);
+        
+        const response = await axios.delete(`${CapstoneUrl}books/${bookID}`);
+        
+        if (response.status !== 200) {
+          throw new Error(`Failed to delete product. Status: ${response.status}`);
+        }
+        
+        context.commit("removeBook", bookID);
+        context.commit("setDeletionStatus", "success");
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        context.commit("setDeletionStatus", "error");
+      }
+    },
+    //=======update the book
+    async updateBook(context, updatedBookData) {
+      try {
+        context.commit("setUpdateStatus", null);
+    
+        const response = await axios.put(`${CapstoneUrl}books/${updatedBookData.bookID}`, updatedBookData);
+    
+        if (response.status === 200) {
+          context.commit("updateBookInState", updatedBookData);
+          context.commit("setUpdateStatus", "success");
+        } else {
+          throw new Error(`Failed to update book. Status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error updating book:", error);
+        context.commit("setUpdateStatus", "error");
+      }
+    },
+    
+
+    // =============register and login users
     async registerUser({ commit }, userData) {
       try {
         const response = await axios.post(`${CapstoneUrl}register`, userData);
@@ -119,7 +177,25 @@ export default createStore({
           text: error.message,
         });
       }
-    }
+    },
+
+    //=========cart
+    async addItemToCart({ commit }, item) {
+      
+      commit('addToCart', item);
+    },
+  
+    
+    async removeItemFromCart({ commit }, itemToRemove) {
+      
+      commit('removeFromCart', itemToRemove);
+    },
+  
+   
+    async updateItemQuantity({ commit }, { item, quantity }) {
+     
+      commit('updateCartItemQuantity', { item, quantity });
+    },
 
   },
   modules: {} 

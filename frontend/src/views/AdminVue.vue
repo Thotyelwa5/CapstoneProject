@@ -1,8 +1,6 @@
-
 <template>
   <div>
-   
-    <AddBook @bookAdded="fetchBooks" />
+    <AddBookComp @bookAdded="fetchBooks" />
     <table class="table">
       <thead>
         <tr>
@@ -20,12 +18,14 @@
           <td>{{ book.bookTitle }}</td>
           <td>{{ book.amount }}</td>
           <td>{{ book.category }}</td>
-          <td><img :src="book.bookUrl" alt="books"  class="book-image"></td>
+          <td><img :src="book.bookUrl" alt="books" class="book-image" /></td>
           <td>
             <!-- edit -->
-            <i class="far fa-pen-to-square"></i>
-            <!-- delete  -->
-            <i class="fa-regular fa-trash-can"></i>
+            <updateBookComp @bookupdated="fetchBooks" />
+            <!-- delete -->
+            <button @click="deleteBook(book.bookID)">
+              <i class="far fa-trash-can"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -35,11 +35,12 @@
 
 <script>
 import axios from "axios";
-import AddBook from "@/components/AddBookComp.vue";
+import AddBookComp from "@/components/AddBookComp.vue";
+import updateBookComp from '@/components/updateBookComp.vue'
 
 export default {
   name: "AdminBookTable",
-  components: { AddBook },
+  components: { AddBookComp, updateBookComp},
   computed: {
     books() {
       return this.$store.state.books;
@@ -60,17 +61,31 @@ export default {
       }
     },
   
-    async deleteProduct(bookID) {
+    async deleteBook(bookID) {
       const confirmed = confirm("Are you sure you want to delete this book?");
       if (confirmed) {
         try {
           await this.$store.dispatch("deleteBook", bookID);
           console.log("Book deleted successfully!");
-        } catch (error) {
-          console.error("Error deleting book:", error);
+        } catch (err) {
+          console.error("Error deleting book:", err);
         }
       }
-      this.$router.push("/admin");
+    },
+    async updateBook(bookID) {
+      this.$router.push({
+        path: "/updateBookComp",
+        params: {id: bookID}
+      })
+      const confirmed = confirm("Book succesfully edited");
+      if (confirmed) {
+        try {
+          await this.$store.dispatch("updateBook", bookID);
+          console.log("Book updated successfully!");
+        } catch (err) {
+          console.error("Error updating the book:", err);
+        }
+      }
     },
   },
 };

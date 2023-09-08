@@ -1,5 +1,6 @@
 
   <template>
+    <div class="d-flex justify-content-center align-items-center mb-5">
     <div class="container">
       <header>
         <h3 class="title">Log In or Register</h3>
@@ -26,6 +27,7 @@
           />
           <button class="clkbtn" @click="login">Login</button>
         </div>
+        
         
   
         <div class="signup-box" v-else-if="activeForm === 'signup'">
@@ -91,6 +93,7 @@
       </div>
       <p v-if="registrationError" class="error">{{ registrationError }}</p>
     </div>
+  </div>
   </template>
   
   <script>
@@ -274,6 +277,7 @@
     padding: 0px 40px;
   }
   
+  
   .login-box {
     gap: 50px;
   }
@@ -283,7 +287,7 @@
   }
   
   .ele {
-    height: 60px;
+    height: 80px;
     width: 400px;
     outline: none;
     border: none;
@@ -296,12 +300,13 @@
   
   .clkbtn {
     height: 60px;
-    width: 150px;
+    width: 200px;
     border-radius: 50px;
     background-image: linear-gradient(to right, rgb(255, 195, 110), rgb(255, 146, 91));
     font-size: 22px;
     border: none;
     cursor: pointer;
+    margin-bottom: 20px;
   }
   
   /* For Responsiveness of the page */

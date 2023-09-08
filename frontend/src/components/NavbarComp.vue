@@ -11,6 +11,7 @@
             <router-link to="/books">Books</router-link>
             <router-link to="/contact">Contact</router-link>
             <router-link to="/admin">Admin</router-link>
+            <router-link to="/user">User</router-link>
           </div>
         </div>
         <div class="icons">
@@ -113,7 +114,7 @@
   }
   
   .navigation .nav-items a{
-      color: #fff;
+      color: black;
       font-size: 1em;
       text-decoration: none;
       text-shadow: 0 5px 25px rbga(0, 0, 0, 0.1);
@@ -165,7 +166,7 @@
           height: 100vh;
           top: 0;
           left: 0;
-          background: rgba(0, 0, 0, 0.25);
+          background: #FFE5AD;
           display: flex;
           justify-content: center;
           align-items: center;
