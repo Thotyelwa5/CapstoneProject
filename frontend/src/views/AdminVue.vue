@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-for="user in users" :key="user.id">
+      <UsersComp :user="user" />
+    </div>
     <AddBookComp @bookAdded="fetchBooks" />
     <table class="table">
       <thead>
@@ -35,29 +38,44 @@
 
 <script>
 import axios from "axios";
+import UsersComp from "@/components/UsersComp.vue"
 import AddBookComp from "@/components/AddBookComp.vue";
 import updateBookComp from '@/components/updateBookComp.vue'
 
 export default {
   name: "AdminBookTable",
-  components: { AddBookComp, updateBookComp},
+  components: {UsersComp, AddBookComp, updateBookComp},
   computed: {
+    users() {
+      return this.$store.state.users; 
+    },
     books() {
       return this.$store.state.books;
     },
   },
   mounted() {
+    this.$store.dispatch('fetchUsers');
     this.$store.dispatch('fetchBooks');
   },
   methods: {
     async fetchBooks() {
       try {
         const response = await axios.get(
-          "http://localhost:3000/boks"
+          "http://localhost:3000/books"
         );
         this.$store.commit("setBooks", response.data);
       } catch (error) {
         console.error("Error fetching books:", error);
+      }
+    },
+    async fetchUsers() {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/users"
+        );
+        this.$store.commit("setUsers", response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
       }
     },
   
@@ -92,7 +110,6 @@ export default {
 </script>
 
 <style scoped>
-
 .table-container {
   overflow-x: auto;
 }
@@ -103,19 +120,42 @@ export default {
 }
 
 .table th, .table td {
-  border: 1px solid #ccc;
-  padding: 8px;
+  border: none; /* Remove borders */
+  padding: 10px;
   text-align: left;
 }
 
+.table th {
+  background-color: #f2f2f2; /* Header background color */
+}
+
 .book-image {
-  max-width: 60px; 
-  height: 60px; 
+  max-width: 60px;
+  height: 60px;
+  
+}
+
+/* Button styles */
+.btn {
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.btn-edit {
+  background-color: #007bff; 
+}
+
+.btn-delete {
+  background-color: #dc3545; 
 }
 
 @media (max-width: 768px) {
   .table th, .table td {
-    font-size: 14px; 
+    font-size: 14px;
   }
 }
 </style>

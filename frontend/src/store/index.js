@@ -4,12 +4,11 @@ import sweet from 'sweetalert'
 import router from '@/router'
 import { useCookies } from 'vue3-cookies'
 import authUser from '@/services/AuthenticateUser'
-
 const CapstoneUrl = "http://localhost:3000/"
 
 export default createStore({
   state: {
-    users: null,
+    Users: null,
     user: null,
     books: null,
     book: null,
@@ -19,11 +18,15 @@ export default createStore({
     user: null,
     token: null,
     isLoggedIn: false,
-    cart: []
+    cart: [],
+    selectedAuthor: null,
   },
   mutations: {
-    setUserData(state, user) {
+    setUser(state, user) {
       state.user = user
+    },
+    setUsers(state, users) {
+      state.users = users
     },
     setBooks(state, books) {
       state.books = books
@@ -64,6 +67,13 @@ export default createStore({
       state.token = null;
       state.isLoggedIn = false;
     },
+    setselectedAuthor(state, author) {
+      state.selectedAuthor = author;
+      state.filteredBooks = state.books.filter((book) => {
+        const authorName = book.authorName + " " + book.authorSurname;
+        return authorName === author;
+      });
+    },
     removeFromCart(state, itemToRemove) {
       state.cart = state.cart.filter((item) => item.bookID !== itemToRemove.bookID);
     },
@@ -73,6 +83,7 @@ export default createStore({
         cartItem.quantity = quantity;
       }
     },
+
   },
   actions: {
     // ============fetchBooks and a Book
@@ -91,6 +102,24 @@ export default createStore({
         context.commit("setBook", data.result[0]);
       } catch (e) {
         context.commit("setMsg", "An error occurred.");
+      }
+    },
+     //==============DELETE A User
+     async deleteUser(context, userID) {
+      try {
+        context.commit("setDeletionStatus", null);
+        
+        const response = await axios.delete(`${CapstoneUrl}user/${userID}`);
+        
+        if (response.status !== 200) {
+          throw new Error(`Failed to delete user. Status: ${response.status}`);
+        }
+        
+        context.commit("removeUser", userID);
+        context.commit("setDeletionStatus", "success");
+      } catch (error) {
+        console.error("Error deleting user:", error);
+        context.commit("setDeletionStatus", "error");
       }
     },
     //==============DELETE A BOOK
@@ -195,6 +224,19 @@ export default createStore({
     async updateItemQuantity({ commit }, { item, quantity }) {
      
       commit('updateCartItemQuantity', { item, quantity });
+    },
+    filterBooksByAuthor({ commit }, author) {
+      commit("setSelectedAuthor", author);
+    },
+    //======fetch users
+    async fetchUsers(context) {
+      try{
+        const {data} = await axios.get(`${CapstoneUrl}users`)
+        context.commit("setUsers", data.results)
+        console.log(data.results);
+      }catch(e){
+        context.commit("setMsg", "An error occured.")
+      }
     },
 
   },
