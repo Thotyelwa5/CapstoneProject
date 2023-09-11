@@ -17,12 +17,10 @@ class BookAuth {
     addAuthor(req, res) {
         const data = req.body;
         const query = `
-        INSERT INTO BookAuthor (authorName, authorSurname, bookID)
-        VALUES (?, ?, ?);
+        INSERT INTO BookAuthor 
+        SET ?;
         `;
-        const values = [data.authorName, data.authorSurname, data.bookID];
-
-        db.query(query, values, (err) => {
+        db.query(query, [data], (err) => {
             if (err) throw err;
             res.json({
                 status: res.statusCode,
@@ -51,9 +49,7 @@ class BookAuth {
         SET authorName = ?, authorSurname = ?, bookID = ?
         WHERE id = ?;
         `;
-        const values = [data.authorName, data.authorSurname, data.bookID, req.params.id];
-
-        db.query(query, values, (err) => {
+        db.query(query, [req.body, req.params.id], (err) => {
             if (err) throw err;
             res.json({
                 status: res.statusCode,

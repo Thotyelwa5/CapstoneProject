@@ -12,11 +12,9 @@ function createToken(user) {
     })  
 }
 function verifyAToken(req, res, next){
-    /*
-    To prevent undefined error, place ?. before your property.
-    */
+    
    try{
-        // Retrieve token from req.headers
+        
         console.log("Get token from req.headers['authorization']");
         const token = req.headers["authorization"]
         console.log(token);
@@ -34,6 +32,3 @@ module.exports = {
  verify,
  verifyAToken
 }
-// function verifyAToken(req, res, next){
-//   const token = req.headers["authorization"].
-// }
