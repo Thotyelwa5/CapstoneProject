@@ -8,8 +8,9 @@ const CapstoneUrl = "http://localhost:3000/"
 
 export default createStore({
   state: {
-    Users: null,
+    users: null,
     Order: [],
+    cart: [],
     user: null,
     books: null,
     book: null,
@@ -22,6 +23,9 @@ export default createStore({
     selectedAuthor: null,
   },
   mutations: {
+    addToCart(state, book) {
+      state.cart.push(book);
+    },
     setUser(state, user) {
       state.user = user
     },
@@ -51,8 +55,8 @@ export default createStore({
     setMsg(state, msg) {
       state.msg = msg
     },
-    addToCart(state, book) {
-      state.cart.push(book)
+    setOrder(state, bookID) {
+      state.cart.push(bookID)
     },
     setUser(state, user) {
       state.user = user;
@@ -67,33 +71,28 @@ export default createStore({
     setUpdateStatus(state, status) {
       state.setUpdateStatus = status;
     },
-    addOrder(state, item) {
-      state.Order.push(item);
-    },
     clearUser(state) {
       state.user = null;
       state.token = null;
       state.isLoggedIn = false;
     },
-    setselectedAuthor(state, author) {
-      state.selectedAuthor = author;
-      state.filteredBooks = state.books.filter((book) => {
-        const authorName = book.authorName + " " + book.authorSurname;
-        return authorName === author;
-      });
-    },
-    removeFromOrder(state, itemToRemove) {
-      state.Order = state.Order.filter((item) => item.bookID !== itemToRemove.bookID);
-    },
-    updateOrderItemQuantity(state, { item, quantity }) {
-      const OrderItem = state.Order.find((i) => i.bookID === item.bookID);
-      if (OrderItem) {
-        OrderItem.quantity = quantity;
-      }
-    },
-
   },
   actions: {
+    async addOrder({ commit }, { userID, }) {
+      try {
+        const response = await axios.post(`${CapstoneUrl}user/${bookID}/order`, {
+          userID,
+          
+        });
+        if (response.status === 200) {
+          commit("addOrder", response.data); 
+        } else {
+        }
+      } catch (error) {
+        console.error(error);
+        
+      }
+    },
     // ============fetchBooks and a Book
     async fetchBooks(context) {
       try {
@@ -215,27 +214,6 @@ export default createStore({
           text: error.message,
         });
       }
-    },
-
-    //=========cart
-    async addItemToCart({ commit }, item) {
-      
-      commit('addToCart', item);
-    },
-  
-    
-    async removeItemFromCart({ commit }, itemToRemove) {
-      
-      commit('removeFromCart', itemToRemove);
-    },
-  
-   
-    async updateItemQuantity({ commit }, { item, quantity }) {
-     
-      commit('updateCartItemQuantity', { item, quantity });
-    },
-    filterBooksByAuthor({ commit }, author) {
-      commit("setSelectedAuthor", author);
     },
     //=============fetch users
     async fetchUsers(context) {

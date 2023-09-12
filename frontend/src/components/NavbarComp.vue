@@ -5,7 +5,7 @@
       <div v-if="isLoggedIn">
         <p>Welcome back {{ userfirstName }} {{ userlastName }}</p>
       </div>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary justify-content-center">
+      <nav class="navbar navbar-expand-lg bg-body-tertiary justify-content-center fixed-top">
         <div class="container-fluid ">
           <router-link class="nav-link" to="/"><img src="https://i.postimg.cc/h4r9BGbk/inkcascade.png" alt="logo"  width="90" height="90" border-radius="90"></router-link>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

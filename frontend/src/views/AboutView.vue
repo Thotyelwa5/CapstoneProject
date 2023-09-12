@@ -48,7 +48,7 @@ span{
     font-weight: 700;
 }
 .founder-section {
-  margin-top: 10px;
+  
   padding-top: 10px;
   border-top: 1px solid #ccc;
   color:white;
