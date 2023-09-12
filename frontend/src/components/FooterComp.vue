@@ -107,6 +107,7 @@
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Lora:ital,wght@1,500&family=Montserrat:ital,wght@1,100&family=Playfair+Display&display=swap');
 
 .Footer{
     background-color: white;

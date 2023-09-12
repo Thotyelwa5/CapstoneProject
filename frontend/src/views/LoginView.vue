@@ -1,7 +1,7 @@
 <template>
     <div>
       <header>
-        <h3 class="title">Log In</h3>
+        <h3 class="title">Welcome Back</h3>
       </header>
   
       <div class="login-box">

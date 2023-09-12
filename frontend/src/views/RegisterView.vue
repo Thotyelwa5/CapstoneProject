@@ -1,50 +1,115 @@
 
    <template>
-    <div class="d-flex justify-content-center align-items-center mb-5">
-      <div class="container">
-        <div class="btn">
-          <button class="login" @click="toggleForm('login')">Login</button>
-          <button class="signup" @click="toggleForm('signup')">Signup</button>
-        </div>
+    <div>
+      <header>
+        <h3 class="title">Sign Up for Free</h3>
+      </header>
   
-        <div class="form-section">
-          <login v-if="activeForm === 'login'" />
-          <register v-else-if="activeForm === 'signup'" />
-        </div>
-        
-        <p v-if="registrationError" class="error">{{ registrationError }}</p>
+      <div class="signup-box">
+        <input
+          type="text"
+          class="name ele"
+          placeholder="Enter your name"
+          v-model="registerForm.firstName"
+          required
+        />
+      <input
+        type="text"
+        class="name ele"
+        placeholder="Last Name"
+        v-model="registerForm.lastName"
+        required
+      />
+      <input
+        type="text"
+        class="gender ele"
+        placeholder="Gender"
+        v-model="registerForm.gender"
+        required
+      />
+      <input
+        type="date"
+        class="userDOB ele"
+        placeholder="Date of Birth"
+        v-model="registerForm.userDOB"
+        required
+      />
+      <input
+        type="text"
+        class="userRole ele"
+        placeholder="User Role"
+        v-model="registerForm.userRole"
+        required
+      />
+      <input
+        type="email"
+        class="email ele"
+        placeholder="Email"
+        v-model="registerForm.emailAdd"
+        required
+      />
+      <input
+        type="password"
+        class="password ele"
+        placeholder="Password"
+        v-model="registerForm.userPass"
+        required
+      />
+      <input
+        type="profileUrl"
+        class="profileUrl ele"
+        placeholder="profileUrl"
+        v-model="registerForm.profileUrl"
+        required
+      />
+       
+        <button class="clkbtn" @click="registerUser">Signup</button>
       </div>
+  
+      <p v-if="registrationError" class="error">{{ registrationError }}</p>
     </div>
   </template>
   
   <script>
-  import Login from '@/components/LoginComp.vue'; 
-  import Register from '@/components/RegisterComp.vue'
+  import { mapActions } from "vuex";
   
   export default {
-  data() {
-    return {
-      activeForm: 'login',
-      registrationError: null,
-    };
-  },
-  components: {
-    Login,
-    Register,
-  },
-  methods: {
-    toggleForm(form) {
-      this.activeForm = form;
-      this.registrationError = null;
+    data() {
+      return {
+        registerForm: {
+         firstName: "",
+          lastName: "",
+          gender: "",
+          userDOB: "",
+          userRole: "",
+          emailAdd: "",
+          userPass: "",
+          profileUrl: "",
+        },
+        registrationError: null,
+      };
     },
-  },
-};
+    methods: {
+      ...mapActions(["registerUser"]),
+      async registerUser() {
+        this.registrationError = null;
+        try {
+          const response = await this.$store.dispatch("registerUser", this.registerForm);
+          this.$router.push("/login");
+        } catch (error) {
+          this.registrationError =
+            "Registration failed. Please check your inputs and try again.";
+        }
+      },
+    },
+  };
   </script>
    <style scoped>
    * {
      margin: 0;
      padding: 0;
      box-sizing: border-box;
+     font-family: "Poppins", sans-serif;
    }
    
    body {

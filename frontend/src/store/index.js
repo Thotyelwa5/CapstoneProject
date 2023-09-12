@@ -9,6 +9,7 @@ const CapstoneUrl = "http://localhost:3000/"
 export default createStore({
   state: {
     Users: null,
+    Order: [],
     user: null,
     books: null,
     book: null,
@@ -18,12 +19,19 @@ export default createStore({
     user: null,
     token: null,
     isLoggedIn: false,
-    cart: [],
     selectedAuthor: null,
   },
   mutations: {
     setUser(state, user) {
       state.user = user
+    },
+    setUser(state, user) {
+      state.user = user;
+      state.isLoggedIn = true;
+    },
+    clearUser(state) {
+      state.user = null;
+      state.isLoggedIn = false;
     },
     setUsers(state, users) {
       state.users = users
@@ -59,8 +67,8 @@ export default createStore({
     setUpdateStatus(state, status) {
       state.setUpdateStatus = status;
     },
-    addToCart(state, item) {
-      state.cart.push(item);
+    addOrder(state, item) {
+      state.Order.push(item);
     },
     clearUser(state) {
       state.user = null;
@@ -74,13 +82,13 @@ export default createStore({
         return authorName === author;
       });
     },
-    removeFromCart(state, itemToRemove) {
-      state.cart = state.cart.filter((item) => item.bookID !== itemToRemove.bookID);
+    removeFromOrder(state, itemToRemove) {
+      state.Order = state.Order.filter((item) => item.bookID !== itemToRemove.bookID);
     },
-    updateCartItemQuantity(state, { item, quantity }) {
-      const cartItem = state.cart.find((i) => i.bookID === item.bookID);
-      if (cartItem) {
-        cartItem.quantity = quantity;
+    updateOrderItemQuantity(state, { item, quantity }) {
+      const OrderItem = state.Order.find((i) => i.bookID === item.bookID);
+      if (OrderItem) {
+        OrderItem.quantity = quantity;
       }
     },
 
@@ -158,6 +166,7 @@ export default createStore({
         context.commit("setUpdateStatus", "error");
       }
     },
+   
     
 
     // =============register and login users
@@ -228,7 +237,7 @@ export default createStore({
     filterBooksByAuthor({ commit }, author) {
       commit("setSelectedAuthor", author);
     },
-    //======fetch users
+    //=============fetch users
     async fetchUsers(context) {
       try{
         const {data} = await axios.get(`${CapstoneUrl}users`)
