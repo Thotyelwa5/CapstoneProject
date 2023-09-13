@@ -55,31 +55,7 @@ routes.patch('/books/:id', bodyParser.json(),
  (req, res)=>{
     books.updateBook(req,res)
 })
-
-// Order's router
-// routes.get('/orders', (req, res) => {
-//     orders.fetchOrders(req, res); 
-// });
-
-// routes.get('/order/:id', (req, res) => {
-//     orders.fetchOrder(req, res); 
-// });
-
-// routes.post('/add-order', bodyParser.json(), (req, res) => {
-//     orders.addOrder(req, res); 
-// });
-
-// routes.put('/order/:id', bodyParser.json(), (req, res) => {
-//     orders.updateOrder(req, res); 
-// });
-
-// routes.patch('/order/:id', bodyParser.json(), (req, res) => {
-//     orders.updateOrder(req, res); 
-// });
-
-// routes.delete('/order/:id', (req, res) => {
-//     orders.deleteOrder(req, res); 
-// });
+//=====orders
 
 routes.get('/orders/:userID', (req, res) => {
     const userID = req.params.userID;
