@@ -124,7 +124,7 @@ export default {
 <script>
 export default {
   computed: {
-        cartItems() {
+        orders() {
       return this.$store.state.orders;
     }
   },
@@ -134,15 +134,11 @@ export default {
       const userData = JSON.parse(localStorage.getItem('userData'));
       if (userData && userData.result && userData.result.userID) {
         const userID = userData.result.userID;
-        await this.$store.dispatch("getCartItems", userID);
+        await this.$store.dispatch("getOrder", userID);
       } else {
         console.error('User data or userID not found in local storage');
       }
     },
-
-    // async updateQuantity(item) {
-    //   await this.$store.dispatch("updateCartItemQuantity", item);
-    // },
 
     async updateQuantity(orderID, newQuantity) {
       await this.$store.dispatch("updateCartQuantity", { orderID, quantity: newQuantity });
@@ -166,7 +162,7 @@ increaseQuantity(item) {
     // },
 
     deleteItem(orderID) {
-          console.log('Deleting item with cartID:', orderID);
+          console.log('Deleting item with orderID:', orderID);
           this.$store.dispatch("removeFromCart", orderID);
       }
   },

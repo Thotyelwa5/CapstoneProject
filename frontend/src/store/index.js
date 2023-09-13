@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 import sweet from 'sweetalert'
 import router from '@/router'
+import Cookies from "js-cookie";
 import { useCookies } from 'vue3-cookies'
 import authUser from '@/services/AuthenticateUser'
 const CapstoneUrl = "http://localhost:3000/"
@@ -14,9 +15,9 @@ export default createStore({
     books: null,
     book: null,
     spinner: false,
-    token: null,
     msg: null,
     user: null,
+    userData: null,
     token: null,
     isLoggedIn: false,
     selectedAuthor: null,
@@ -61,12 +62,36 @@ export default createStore({
     },
     setUser(state, user) {
       state.user = user;
-      state.isLoggedIn = true;
+      // state.isLoggedIn = true;
     },
-    clearUser(state) {
-      state.user = null;
-      state.isLoggedIn = false;
+    setUserData(state, userData){
+      state.userData = userData;
+      if (userData){
+        const userDataForCookie ={
+          msg: userData.msg,
+          token: userData.token,
+          result: userData.result
+        };
+
+        Cookies.set("userData", JSON.stringify(userDataForCookie), {
+          expires : 1,
+          path: "/",
+          secure: true,
+          sameSite: "None"
+        })
+      }
     },
+    setToken(state, token){
+      state.token = token ;
+      Cookies.set("userToken", token ,{
+        expires : 1,
+          path: "/",
+          secure: true,
+          sameSite: "None"
+      });
+      state.isLoggedIn = true; 
+    },
+   
     setUsers(state, users) {
       state.users = users
     },
@@ -98,6 +123,9 @@ export default createStore({
     setDeletionStatus(state, status) {
       state.deletionStatus = status;
     },
+    setorders(state, orders){
+      state.orders = orders
+    },
     setUpdateStatus(state, status) {
       state.setUpdateStatus = status;
     },
@@ -106,14 +134,31 @@ export default createStore({
       state.token = null;
       state.isLoggedIn = false;
     },
+    setError(state, error){
+      state.error= error
+    }
   },
   actions: {
+    //======logout
+    logout(context) {
+      context.commit("setToken", null);
+      context.commit("setUserData", null);
+      context.commit("setUserRole", null);
+      // Clear local storage
+      localStorage.removeItem('userData');
+      localStorage.removeItem('accessToken');
+      // Clear cookies
+      Cookies.remove("userToken", { path: "/" });
+      Cookies.remove("userData", { path: "/" });
+      window.location.reload();
+    },
+
     //add to cart
     async addToCart(context, { bookID, quantity }) {
       try {
         const userID = context.state.userData.result.userID; // Assuming userData contains the user information
         console.log(userID);
-        const response = await fetch(`${CapstoneUrl}add-items/${userID}`, {
+        const response = await fetch(`${CapstoneUrl}add-order/${userID}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -134,7 +179,7 @@ export default createStore({
 
     async updateCartQuantity(context, { orderID, quantity }) {
       try {
-        const response = await fetch(`${CapstoneUrl}items/${orderID}`, {
+        const response = await fetch(`${CapstoneUrl}order/${orderID}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -152,19 +197,41 @@ export default createStore({
       }
     },
   
-    async removeFromCart(context, orderID) {
+    async removeFromOrders(context, orderID) {
       const userID = context.state.userData.result.userID;
       console.log("User ID:", userID, "order ID:", orderID);
       try {
-        const response = await fetch(`${CapstoneUrl}items/${userID}/${orderID}`, {
+        const response = await fetch(`${CapstoneUrl}order/${userID}/${orderID}`, {
           method: "DELETE",
         });
         if (!response.ok) {
           throw Error("Failed to remove item from cart");
         }
-        context.commit("removeFromCart", orderID);
+        context.commit("removeFromOrders", orderID);
       } catch (error) {
         context.commit("setError", error.message);
+      }
+    },
+    async getOrder(context) {
+      const userID = context.state.userData?.result?.userID; 
+      console.log('userID:', userID);
+    
+      if (userID) { 
+        try {
+          const response = await fetch(`${CapstoneUrl}order/${userID}`);
+          if (!response.ok) {
+            throw Error("Failed to retrieve cart items");
+          }
+          const data = await response.json();
+          console.log(data);
+          const orders = data.results;
+          context.commit("setorders", orders);
+          console.log(orders);
+        } catch (error) {
+          context.commit("setError", error.message);
+        }
+      } else {
+        console.error('User data or userID not found in state');
       }
     },
  
@@ -270,26 +337,37 @@ export default createStore({
         });
       }
     },
-  
-    async loginUser({ commit }, credentials) {
+
+    async loginUser(context, userData) {
       try {
-        const response = await axios.post(`${CapstoneUrl}login`, credentials);
-        const { token, user } = response.data;
-        commit("setToken", token);
-        commit("setUser", user);
-        sweet({
-          icon: "success",
-          title: "Login Successful",
-          text: "You have successfully logged in.",
+        const response = await axios.post(`${CapstoneUrl}login`, userData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
+    
+        if (!response.data.token) {
+          throw new Error('Failed to login user.');
+        }
+    
+        const data = response.data;
+        const accessToken = data.token;
+    
+        localStorage.setItem('userData', JSON.stringify(data));
+        localStorage.setItem('accessToken', accessToken);
+    
+        context.commit('setUser', data.user);
+        context.commit('setToken', accessToken);
+        context.commit('setUserData', data);
+        
+        return data;
       } catch (error) {
-        sweet({
-          icon: "error",
-          title: "Error",
-          text: error.message,
-        });
+        console.error('Error logging in user:', error);
+        context.commit('setError', error.message);
+        throw error;
       }
     },
+
     //=============fetch users
     async fetchUsers(context) {
       try{

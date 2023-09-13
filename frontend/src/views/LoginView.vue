@@ -4,7 +4,7 @@
       <h3 class="title">Welcome Back</h3>
     </header>
 
-    <div class="login-box">
+    <form class="login-box" @submit.prevent="loginUser">
       <input
         type="email"
         class="email ele"
@@ -17,15 +17,15 @@
         placeholder="Password"
         v-model="loginForm.userPass"
       />
-      <button class="clkbtn" @click="login">Login</button>
-    </div>
+      <button class="clkbtn" type="submit">Login</button>
+    </form>
 
     <p v-if="error" class="error">{{ error }}</p>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import sweet from 'sweetalert';
 
 export default {
   data() {
@@ -37,38 +37,47 @@ export default {
       error: null,
     };
   },
+
   methods: {
-    ...mapActions(["loginUser"]),
-    async login() {
-      try {
-        const response = await this.loginUser(this.loginForm);
-        console.log("Response from server:", response);
-        if (response && response.token) {
-          const token = response.token;
-          this.$cookies.set("userToken", token);
-         
-          if (response.userPass === this.loginForm.userPass) {
-           
-            // this.$router.push("/dashboard");
-          } else {
-            
-            this.error = "Incorrect password";
-          }
-        } else {
-          this.$router.push("/");
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          console.log(error.response);
-          this.error = "Authentication failed";
-        } else {
-          console.log(error);
-          this.error = "An error occurred";
-        }
-      }
-    },
-  },
+    async loginUser() {
+  try {
+    const userData = {
+      emailAdd: this.loginForm.emailAdd,
+      userPass: this.loginForm.userPass,
+    };
+
+    const data = await this.$store.dispatch("loginUser", userData);
+
+    console.log(JSON.stringify(data, null, 2));
+
+    if (data && data.token) {
+      this.$store.commit("setToken", data.token);
+      sweet({
+        icon: 'success',
+        title: 'Login Successful',
+        text: data.msg,
+      });
+    } else {
+      sweet({
+        icon: 'error',
+        title: 'Login Failed',
+        text: data.msg || 'Login failed',
+      });
+    }
+  } catch (error) {
+    console.error('Error logging in user:', error);
+    sweet({
+      icon: 'error',
+      title: 'Error',
+      text: `Error logging in user: ${error.message}`,
+    });
+  }
+},
+
+},
+
 };
+
 </script>
 
 <style scoped>

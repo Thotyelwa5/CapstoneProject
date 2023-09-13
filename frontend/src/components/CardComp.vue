@@ -44,7 +44,7 @@
                 <div class="d-flex justify-content-between align-items-center pb-2 mb-1">
                   <button
                     class="btn btn-outline-primary btn-sm mt-2"
-                    @click="addToCart(book)"
+                    @click="addToCart(book.bookID, 1)"
                   >
                     Add to cart
                   </button>

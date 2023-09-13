@@ -2,9 +2,9 @@
 
   <template>
     <div>
-      <div v-if="isLoggedIn">
+      <!-- <div v-if="isLoggedIn">
         <p>Welcome back {{ userfirstName }} {{ userlastName }}</p>
-      </div>
+      </div> -->
       <nav class="navbar navbar-expand-lg bg-body-tertiary justify-content-center fixed-top">
         <div class="container-fluid ">
           <router-link class="nav-link" to="/"><img src="https://i.postimg.cc/h4r9BGbk/inkcascade.png" alt="logo"  width="90" height="90" border-radius="90"></router-link>
@@ -13,17 +13,20 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="nav-links navbar-nav navbar-left">
-               <li class="mx-3"><router-link to="/">Home</router-link></li> 
-                <li class="mx-3"><router-link to="/about">About</router-link></li>
-                <li class="mx-3"><router-link to="/books">Books</router-link></li>
-                <li class="mx-3"><router-link to="/cart">Cart</router-link></li>
-                <li class="mx-3"><router-link to="/contact">Contact Us</router-link></li>
-                <li class="mx-3"><router-link to="/user">Profile</router-link></li>
-                <li class="mx-3"><router-link to="/admin">Admin</router-link></li>
+               <li class="mx-3"><router-link class="text" to="/">Home</router-link></li> 
+                <li class="mx-3"><router-link class="text" to="/about">About</router-link></li>
+                <li class="mx-3"><router-link class="text" to="/books">Books</router-link></li>
+                <li class="mx-3"><router-link class="text" to="/cart">Cart</router-link></li>
+                <li class="mx-3"><router-link class="text" to="/contact">Contact Us</router-link></li>
+                <li class="mx-3"><router-link class="text" to="/user">Profile</router-link></li>
+                <li class="mx-3"><router-link class="text" to="/admin">Admin</router-link></li>
                 </ul>
+                <div class="d-flex login-signup" v-if="isLoggedIn">
+                  <button @click="logout">Logout</button>
+                </div>
                 <div class="d-flex login-signup">
-                  <li class="mx-3"><router-link to="/login" class="login-button">Login</router-link></li>
-                <li class="mx-3"><router-link to="/register" class="join-button">Sign Up</router-link></li> 
+                  <li class="mx-3"><router-link :to="{ name: 'login' }" class="login-button" v-if="!isLoggedIn">Login</router-link></li>
+                <li class="mx-3"><router-link :to="{ name: 'register' }" class="join-button" v-if="!isLoggedIn">Sign Up</router-link></li> 
                 </div>
             </div>   
           </div>   
@@ -31,35 +34,31 @@
     </div>
   </template>
   
-  <script>
-   export default {
+<script>
+export default {
   computed: {
-    userfirstName() {
-      const userDataJSON = Cookies.get("userData"); 
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
+    }
+  },
 
-      if (userDataJSON) {
-        const userData = JSON.parse(userDataJSON);
-        return userData.result.firstName || "";
-      }
-      return "";
-    },
-    userlastName() {
-      const userDataJSON = Cookies.get("userData");
-      if (userDataJSON) {
-        const userData = JSON.parse(userDataJSON);
-        return userData.result.lastName || "";
-      }
-      return "";
-    },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+      window.location.reload();
+    }
   },
 };
 
-  </script>
+</script>
   
   <style scoped>
   @import url('https://fonts.googleapis.com/css2?family=Anton&family=Lora:ital,wght@1,500&family=Montserrat:ital,wght@1,100&family=Playfair+Display&display=swap');
   .login-button{
     text-align: right;
+  }
+  .text{
+    text-decoration: none;
   }
   .navbar{
     background-color: #FFE5AD;

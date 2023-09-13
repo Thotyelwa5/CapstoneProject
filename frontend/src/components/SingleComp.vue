@@ -43,7 +43,7 @@
                       </div>
                       <h6 class="text-success">Free shipping</h6>
                       <div class="d-flex flex-column mt-4">
-                        <button class="btn btn-outline-primary btn-sm mt-2" @click="addToCart(book)">
+                        <button class="btn btn-outline-primary btn-sm mt-2" @click="addToCart(book.bookID)">
                           Add to cart
                         </button>
                       </div>
@@ -71,14 +71,14 @@ export default {
         },
   },
   methods: {
-    addToCart(book) {
-      this.$store.commit('addToCart', book);
+    addToCart(bookID, quantity) {
+      this.$store.dispatch('addToCart', bookID, quantity);
       this.$router.push('/cart');
     },
   },
   mounted() {
-
-    this.$store.dispatch("fetchBook", this.id);
+    const bookID = this.$route.params.bookID;
+    this.$store.dispatch("fetchBook", bookID);
   },
 };
 </script>
