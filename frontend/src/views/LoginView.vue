@@ -93,6 +93,7 @@ header {
 .title {
   font-weight: 400;
   letter-spacing: 1.5px;
+  margin-top: 150px;
 }
 
 .container {

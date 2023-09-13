@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>See Our Book Collection</h2>
     <SpinnerComp/>
     <CardComp :books="filteredBooks"/>
   </div>

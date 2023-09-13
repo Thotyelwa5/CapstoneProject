@@ -32,19 +32,19 @@
   </template>
   
   <script>
-    export default {
-      computed: {
-        userfirstName() {
-      // Get the user's first name from localStorage
-      const userDataJSON = localStorage.getItem("userData");
+   export default {
+  computed: {
+    userfirstName() {
+      const userDataJSON = Cookies.get("userData"); 
+
       if (userDataJSON) {
         const userData = JSON.parse(userDataJSON);
-        return userData.result.firstName || ""; // Replace 'firstName' with the actual field name
+        return userData.result.firstName || "";
       }
       return "";
     },
     userlastName() {
-      const userDataJSON = localStorage.getItem("userData");
+      const userDataJSON = Cookies.get("userData");
       if (userDataJSON) {
         const userData = JSON.parse(userDataJSON);
         return userData.result.lastName || "";
@@ -52,13 +52,17 @@
       return "";
     },
   },
-    }
+};
+
   </script>
   
   <style scoped>
   @import url('https://fonts.googleapis.com/css2?family=Anton&family=Lora:ital,wght@1,500&family=Montserrat:ital,wght@1,100&family=Playfair+Display&display=swap');
   .login-button{
     text-align: right;
+  }
+  .navbar{
+    background-color: #FFE5AD;
   }
   .nav-links{
     display: flex;

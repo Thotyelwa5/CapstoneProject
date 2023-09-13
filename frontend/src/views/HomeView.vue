@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
+      <div class="carousel-inner ">
         <div class="carousel-item active">
           <img src="https://i.postimg.cc/zBp6xtMm/pexels-vlada-karpovich-9969154.jpg" class="d-block w-100 " alt="image">
         </div>
