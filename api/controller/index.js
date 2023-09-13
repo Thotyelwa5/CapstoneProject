@@ -57,28 +57,58 @@ routes.patch('/books/:id', bodyParser.json(),
 })
 
 // Order's router
-routes.get('/orders', (req, res) => {
-    orders.fetchOrders(req, res); 
+// routes.get('/orders', (req, res) => {
+//     orders.fetchOrders(req, res); 
+// });
+
+// routes.get('/order/:id', (req, res) => {
+//     orders.fetchOrder(req, res); 
+// });
+
+// routes.post('/add-order', bodyParser.json(), (req, res) => {
+//     orders.addOrder(req, res); 
+// });
+
+// routes.put('/order/:id', bodyParser.json(), (req, res) => {
+//     orders.updateOrder(req, res); 
+// });
+
+// routes.patch('/order/:id', bodyParser.json(), (req, res) => {
+//     orders.updateOrder(req, res); 
+// });
+
+// routes.delete('/order/:id', (req, res) => {
+//     orders.deleteOrder(req, res); 
+// });
+
+routes.get('/orders/:userID', (req, res) => {
+    const userID = req.params.userID;
+    if (!userID) {
+        return res.status(400).json({ message: 'userID is required' });
+    }
+    orders.getItems(req, res, userID);
 });
 
-routes.get('/order/:id', (req, res) => {
-    orders.fetchOrder(req, res); 
+// Add item to cart
+routes.post('/add-orders/:userID', bodyParser.json(), (req, res) => {
+    const userID = req.params.userID;
+    const { bookID, quantity } = req.body;
+    orders.addItem(req, res, userID, bookID, quantity);
 });
 
-routes.post('/add-order', bodyParser.json(), (req, res) => {
-    orders.addOrder(req, res); 
+// Update item in cart
+routes.put('/orders/:userID/:orderID', bodyParser.json(), (req, res) => {
+    const userID = req.params.userID;
+    const orderID = req.params.orderID;
+    const { quantity } = req.body;
+    orders.updateItem(req, res, userID, orderID, quantity);
 });
 
-routes.put('/order/:id', bodyParser.json(), (req, res) => {
-    orders.updateOrder(req, res); 
-});
-
-routes.patch('/order/:id', bodyParser.json(), (req, res) => {
-    orders.updateOrder(req, res); 
-});
-
-routes.delete('/order/:id', (req, res) => {
-    orders.deleteOrder(req, res); 
+// Delete item from cart
+routes.delete('/orders/:userID/:orderID', (req, res) => {
+    const userID = req.params.userID;
+    const orderID = req.params.orderID;
+    orders.deleteItem(req, res, userID, orderID);
 });
 
 // Book Author's router
