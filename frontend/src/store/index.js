@@ -9,8 +9,7 @@ const CapstoneUrl = "http://localhost:3000/"
 export default createStore({
   state: {
     users: null,
-    Order: [],
-    cart: [],
+    orders: [],
     user: null,
     books: null,
     book: null,
@@ -23,9 +22,40 @@ export default createStore({
     selectedAuthor: null,
   },
   mutations: {
-    addToCart(state, book) {
-      state.cart.push(book);
-    },
+   setOrders(state, orders){
+   state.orders = orders
+   localStorage.setItem('orders', JSON.stringify(state.orders))
+   },
+   addToCart(state, { bookID, quantity }) {
+    const orderItem = state.orders.find(item => item.bookID === bookID);
+  
+    if (orderItem) {
+      // If the item is already in the cart, update its quantity
+      orderItem.quantity += quantity;
+    } else {
+      // If the item is not in the cart, add it
+      const newItem = {
+        bookID: bookID,
+        quantity: quantity,
+      };
+      state.orders.push(newItem);
+    }
+  
+    localStorage.setItem('order', JSON.stringify(state.orders));
+  },  
+
+  updateQuantity(state, { orderID, quantity }) {
+    const item = state.orders.find(item => item.orderID === orderID);
+
+    if (item) {
+      item.quantity = quantity;
+      localStorage.setItem('order', JSON.stringify(state.orders));
+    }
+  },
+
+  removeFromCart(state, orderID) {
+    state.orders = state.orders.filter(item => item.orderID !== orderID);
+  },
     setUser(state, user) {
       state.user = user
     },
@@ -78,21 +108,66 @@ export default createStore({
     },
   },
   actions: {
-    async addOrder({ commit }, { userID, }) {
+    //add to cart
+    async addToCart(context, { bookID, quantity }) {
       try {
-        const response = await axios.post(`${CapstoneUrl}user/${bookID}/order`, {
-          userID,
-          
+        const userID = context.state.userData.result.userID; // Assuming userData contains the user information
+        console.log(userID);
+        const response = await fetch(`${CapstoneUrl}add-items/${userID}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ bookID, quantity }),
         });
-        if (response.status === 200) {
-          commit("addOrder", response.data); 
-        } else {
+    
+        if (!response.ok) {
+          throw new Error(`Failed to add item to cart. Status: ${response.status}`);
         }
+    
+        const data = await response.json();
+        context.commit("addToCart", data.result);
       } catch (error) {
-        console.error(error);
-        
+        context.commit("setError", error.message);
       }
     },
+
+    async updateCartQuantity(context, { orderID, quantity }) {
+      try {
+        const response = await fetch(`${CapstoneUrl}items/${orderID}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ quantity }),
+        });
+  
+        if (!response.ok) {
+          throw Error("Failed to update item quantity in cart");
+        }
+  
+        context.commit("updateQuantity", { orderID, quantity });
+      } catch (error) {
+        context.commit("setError", error.message);
+      }
+    },
+  
+    async removeFromCart(context, orderID) {
+      const userID = context.state.userData.result.userID;
+      console.log("User ID:", userID, "order ID:", orderID);
+      try {
+        const response = await fetch(`${CapstoneUrl}items/${userID}/${orderID}`, {
+          method: "DELETE",
+        });
+        if (!response.ok) {
+          throw Error("Failed to remove item from cart");
+        }
+        context.commit("removeFromCart", orderID);
+      } catch (error) {
+        context.commit("setError", error.message);
+      }
+    },
+ 
     // ============fetchBooks and a Book
     async fetchBooks(context) {
       try {

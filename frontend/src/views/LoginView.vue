@@ -1,65 +1,76 @@
 <template>
-    <div>
-      <header>
-        <h3 class="title">Welcome Back</h3>
-      </header>
-  
-      <div class="login-box">
-        <input
-          type="email"
-          class="email ele"
-          placeholder="Email"
-          v-model="loginForm.emailAdd"
-        />
-        <input
-          type="password"
-          class="password ele"
-          placeholder="Password"
-          v-model="loginForm.userPass"
-        />
-        <button class="clkbtn" @click="login">Login</button>
-      </div>
-  
-      <p v-if="error" class="error">{{ error }}</p>
+  <div>
+    <header>
+      <h3 class="title">Welcome Back</h3>
+    </header>
+
+    <div class="login-box">
+      <input
+        type="email"
+        class="email ele"
+        placeholder="Email"
+        v-model="loginForm.emailAdd"
+      />
+      <input
+        type="password"
+        class="password ele"
+        placeholder="Password"
+        v-model="loginForm.userPass"
+      />
+      <button class="clkbtn" @click="login">Login</button>
     </div>
-  </template>
-  
-  <script>
-  import { mapActions } from "vuex";
-  
-  export default {
-    data() {
-      return {
-        loginForm: {
-          emailAdd: "",
-          userPass: "",
-        },
-        error: null,
-      };
-    },
-    methods: {
-      ...mapActions(["loginUser"]),
-      async login() {
-        try {
-          const response = await this.loginUser(this.loginForm);
-          console.log("Response from server:", response);
-          if (response && response.token) {
-            const token = response.token;
-            this.$cookies.set("userToken", token);
-          } else {
-            this.$router.push("/");
-          }
-        } catch (error) {
-          if (error.response && error.response.status === 401) {
-            console.log(error.response);
-          } else {
-            console.log(error);
-          }
-        }
+
+    <p v-if="error" class="error">{{ error }}</p>
+  </div>
+</template>
+
+<script>
+import { mapActions } from "vuex";
+
+export default {
+  data() {
+    return {
+      loginForm: {
+        emailAdd: "",
+        userPass: "",
       },
+      error: null,
+    };
+  },
+  methods: {
+    ...mapActions(["loginUser"]),
+    async login() {
+      try {
+        const response = await this.loginUser(this.loginForm);
+        console.log("Response from server:", response);
+        if (response && response.token) {
+          const token = response.token;
+          this.$cookies.set("userToken", token);
+         
+          if (response.userPass === this.loginForm.userPass) {
+           
+            // this.$router.push("/dashboard");
+          } else {
+            
+            this.error = "Incorrect password";
+          }
+        } else {
+          this.$router.push("/");
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          console.log(error.response);
+          this.error = "Authentication failed";
+        } else {
+          console.log(error);
+          this.error = "An error occurred";
+        }
+      }
     },
-  };
-  </script>
+  },
+};
+</script>
+
 <style scoped>
 * {
   margin: 0;
