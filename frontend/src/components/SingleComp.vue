@@ -92,97 +92,31 @@ export default {
     },
   },
   methods: {
-    // addToCart(bookID, quantity) {
-    //   this.$store.dispatch("addToCart", bookID, quantity);
-    //   this.$router.push("/cart");
-    // },
-//     async addToCart(userID,bookID, quantity) {
-//   try {
-//     const userDataJSON = localStorage.getItem("userData");
-//     if (userDataJSON) {
-//       const userData = JSON.parse(userDataJSON);
-//       const userID = userData.result.userID;
-//       console.log("USER ID:", userID);
-//       const Orders = {
-//         bookID: bookID, 
-//         userID: userID,
-//         quantity: quantity, 
-//       };
-//       console.log("BOOK ID:", bookID); 
-//       console.log("QUANTITY:", quantity);
-      
-//     }
-//   } catch (error) {
-//     console.error("Error adding to cart:", error);
-//     sweet({
-//       icon: "error",
-//       title: "Error",
-//       text: "An error occurred while adding the book to your cart.",
-//     });
-//   }
-// },
-addToCart(bookID, quantity) {
+addToCart(bookID, quantity, totalAmount) {
   console.log("Adding:", bookID);
-  // this.$router.push("/cart");
+  console.log("Adding:", totalAmount);
   console.log("Book Data:", this.book);
-  this.$store.dispatch("addToCart", {bookID, quantity})
+  this.$store.dispatch("addToCart", {bookID, quantity, totalAmount})
+  this.$store.dispatch("addToCart", { bookID, quantity })
+    .then(() => {
+      sweet({
+        icon: 'success',
+        title: 'Book Added to Cart',
+        text: 'The book has been added to your cart successfully!',
+        showConfirmButton: false,
+        timer: 1500 
+      });
+    })
+    .catch(error => {
+      console.error('Error adding book to cart:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      });
+    });
+    this.$router.push('/cart');
 }
-
-    // async addToCart() {
-    //   try {
-    //     const userDataJSON = localStorage.getItem("userData");
-    //     if (userDataJSON) {
-    //       const userData = JSON.parse(userDataJSON);
-    //       const userID = userData.result.userID;
-    //       console.log(userID);
-    //       const product = {
-    //         bookID: this.bookID,
-    //         userID: userID,
-    //         quantity: this.quantity,
-    //       };
-    //       console.log(this.bookID);
-    //       console.log(this.quantity);
-    //       const existingBookIndex = this.$store.state.cart.findIndex(
-    //         (item) => item.bookID === book.bookID
-    //       );
-    //       if (existingBookIndex !== -1) {
-    //         const existingBook = this.$store.state.cart[existingBookIndex];
-    //         await this.$store.dispatch("updateCartItem", {
-    //           index: existingBookIndex,
-    //           newQuantity: existingBook.quantity + this.quantity,
-    //         });
-    //       } else {
-    //         await this.$store.dispatch("addToCart", product);
-    //       }
-    //       await this.$store.dispatch("getCart");
-    //       sweet({
-    //         icon: "success",
-    //         title: "Added to Cart",
-    //         text: "The book has been added to your cart.",
-    //       });
-    //     } else {
-    //       sweet({
-    //         icon: "error",
-    //         title: "Not Logged In",
-    //         text: "You need to log in to add book to your cart.",
-    //         confirmButtonText: "Log In",
-    //         showCancelButton: true,
-    //         cancelButtonText: "Cancel",
-    //       }).then((result) => {
-    //         if (result.isConfirmed) {
-    //           this.$router.push("/login");
-    //         }
-    //       });
-    //     }
-    //   } catch (error) {
-    //     console.error("Error adding to cart:", error);
-    //     sweet({
-    //       icon: "error",
-    //       title: "Error",
-    //       text: "An error occurred while adding the book to your cart.",
-    //     });
-    //   }
-    // },
   },
   mounted() {
     const bookID = this.$route.params.bookID;

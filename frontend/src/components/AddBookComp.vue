@@ -7,7 +7,7 @@
     <input v-model="newBook.amount" placeholder="amount" type="number" step="0.01"/>
     <input v-model="newBook.category" placeholder="category" />
     <input v-model="newBook.bookUrl" placeholder=" bookUrl" />
-    <button @click="addBook">Add Product</button>
+    <button @click="addBook">Add Book</button>
   </div>
 </template>
 
@@ -29,7 +29,7 @@ export default {
   methods: {
       async addBook() {
     try {
-      const response = await axios.post('http://localhost:3000/books', this.newBook);
+      const response = await axios.post('https://capstone-4p7c.onrender.com/books', this.newBook);
       alert(response.data.msg); 
       this.newBook = {
         data() {

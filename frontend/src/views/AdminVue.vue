@@ -61,7 +61,7 @@ export default {
     async fetchBooks() {
       try {
         const response = await axios.get(
-          "http://localhost:3000/books"
+          "https://capstone-4p7c.onrender.com/books"
         );
         this.$store.commit("setBooks", response.data);
       } catch (error) {
@@ -71,7 +71,7 @@ export default {
     async fetchUsers() {
       try {
         const response = await axios.get(
-          "http://localhost:3000/users"
+          "https://capstone-4p7c.onrender.com/users"
         );
         this.$store.commit("setUsers", response.data);
       } catch (error) {
@@ -120,13 +120,13 @@ export default {
 }
 
 .table th, .table td {
-  border: none; /* Remove borders */
+  border: none;
   padding: 10px;
   text-align: left;
 }
 
 .table th {
-  background-color: #f2f2f2; /* Header background color */
+  background-color: #f2f2f2; 
 }
 
 .book-image {
@@ -135,7 +135,7 @@ export default {
   
 }
 
-/* Button styles */
+
 .btn {
   padding: 5px 10px;
   margin-right: 5px;

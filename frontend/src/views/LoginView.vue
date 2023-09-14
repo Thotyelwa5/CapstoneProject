@@ -33,6 +33,7 @@ export default {
       loginForm: {
         emailAdd: "",
         userPass: "",
+        
       },
       error: null,
     };
@@ -43,9 +44,8 @@ export default {
   try {
     const userData = {
       emailAdd: this.loginForm.emailAdd,
-      userPass: this.loginForm.userPass,
+      userPass: this.loginForm.userPass, 
     };
-
     const data = await this.$store.dispatch("loginUser", userData);
 
     console.log(JSON.stringify(data, null, 2));

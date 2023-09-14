@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
     <div>
       <div class="wrapper">
         <div class="card">
@@ -25,7 +25,7 @@
                   <div class="action-buttons">
                     <button class="edit" v-if="loginForm"><i class="fa fa-pencil"></i></button>
                     <button class="delete" v-if="loginForm"><i class="fa fa-trash"></i></button>
-                    <button class="logout" v-if="loginForm"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+
                   </div>
                 </div>
               </div>
@@ -40,7 +40,7 @@
   export default {
     computed: {
       user() {
-        return this.$store.getters.getUserData;
+        return this.$store.getters.getuserData;
       },
       userIsLoggedIn() {
       return this.$store.state.loginForm;
@@ -203,19 +203,4 @@ html,body {
     
   }
   
-</style> -->
-<template>
-    <div>
-
-    </div>
-</template>
-
-<script>
-    export default {
-        
-    }
-</script>
-
-<style scoped>
-
 </style>

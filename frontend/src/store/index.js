@@ -5,7 +5,7 @@ import router from '@/router'
 import Cookies from "js-cookie";
 import { useCookies } from 'vue3-cookies'
 import authUser from '@/services/AuthenticateUser'
-const CapstoneUrl = "http://localhost:3000/"
+const CapstoneUrl = "https://capstone-4p7c.onrender.com/"
 
 export default createStore({
   state: {
@@ -139,93 +139,18 @@ export default createStore({
   actions: {
     //======logout
     logout({commit}) {
-      //context.commit("setToken", null);
-      //context.commit("setUserData", null);
-      //context.commit("setUserRole", null);
-      // Clear local storage
       localStorage.removeItem("userData");
       localStorage.removeItem("accessToken");
       commit("clearUser")
-      // Clear cookies
-      //Cookies.remove("userToken", { path: "/" });
-//Cookies.remove("userData", { path: "/" });
-// Cookies.remove("userData");
-// Cookies.remove("userToken");
+   
       window.location.reload();
     },
 
-    //add to cart
-    // async addToCart(context, { bookID, quantity }) {
-    //   try {
-    //     const userID = context.state.userData.result.userID; // Assuming userData contains the user information
-    //     console.log("user id:", userID);
-    //     const response = await fetch(`${CapstoneUrl}add-order/${userID}`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({ bookID, quantity }),
-    //     });
-    
-    //     if (!response.ok) {
-    //       throw new Error(`Failed to add item to cart. Status: ${response.status}`);
-    //     }
-    
-    //     const data = await response.json();
-    //     context.commit("addToCart", data.result);
-    //   } catch (error) {
-    //     context.commit("setError", error.message);
-    //   }
-    // },
-
-    // async addToCart(context, { bookID, quantity }) {
-    //   try {
-    //     // const userID = context.state.userData.result.userID; // Assuming userData contains the user information
-    //     // console.log("User ID:",userID);
-        
-    //     const response = await fetch(`${CapstoneUrl}add-items/${userID}`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({ bookID, quantity }),
-    //     });
-    
-    //     if (!response.ok) {
-    //       throw new Error(`Failed to add item to cart. Status: ${response.status}`);
-    //     }
-    
-    //     const data = await response.json();
-    //     const orders = context.state.orders.find(item => item.bookID === bookID);
-    //     console.log(orders);
-    
-    //     if (orders) {
-    //       // If the item is already in the cart, update its quantity
-    //       orders.quantity += quantity;
-    //     } else {
-    //       // If the item is not in the cart, add it
-    //       const newItem = {
-    //         bookID: bookID,
-    //         quantity: quantity,
-    //       };
-    //       context.commit("addToCart", newItem); // Call the original mutation
-    //     }
-    //   } catch (error) {
-    //     context.commit("setError", error.message);
-    //   }
-    // },
-
     async addToCart(context, { bookID, quantity }) {
       try {
-        // Fetch the userData from local storage
         const userDataJSON = localStorage.getItem('userData');
-    
-        // Check if userData exists in local storage
         if (userDataJSON) {
-          // Parse the JSON data
           const userData = JSON.parse(userDataJSON);
-    
-          // Access the userID
           const userID = userData.result.userID;
           console.log("User ID:", userID);
     
@@ -246,15 +171,14 @@ export default createStore({
           console.log(orders);
     
           if (orders) {
-            // If the item is already in the cart, update its quantity
             orders.quantity += quantity;
           } else {
-            // If the item is not in the cart, add it
+            
             const newItem = {
               bookID: bookID,
               quantity: quantity,
             };
-            context.commit("addToCart", newItem); // Call the original mutation
+            context.commit("addToCart", newItem); 
           }
         } else {
           console.error('User data not found in local storage');
@@ -301,76 +225,22 @@ export default createStore({
       }
     },
 
-    // async getOrder(context) {
-    //   const userID = context.state.userData?.result?.userID; 
-    //   console.log('userID Store:', userID);
-    
-    //   if (userID) { 
-    //     try {
-    //       const response = await fetch(`${CapstoneUrl}order/${userID}`);
-    //       if (!response.ok) {
-    //         throw Error("Failed to retrieve cart items");
-    //       }
-    //       const data = await response.json();
-    //       console.log("Data:", data);
-    //       const orders = data.results;
-    //       context.commit("setOrders", orders);
-    //       console.log("Orders Store:", orders);
-    //     } catch (error) {
-    //       context.commit("setError", error.message);
-    //     }
-    //   } else {
-    //     console.error('User data or userID not found in state');
-    //   }
-    // },
-
-    // async getOrder(context) {
-    //   const userData = context.state.userData;
-    //   console.log('userData:', userData);
-      
-    //   const userID = userData?.result?.userID;
-    //   console.log('userID Store:', userID);
-    
-    //   if (userID) {
-    //     try {
-    //       const response = await fetch(`${CapstoneUrl}order/${userID}`);
-    //       if (!response.ok) {
-    //         throw Error("Failed to retrieve cart items");
-    //       }
-    //       const data = await response.json();
-    //       console.log("Data:", data);
-    //       const orders = data.results;
-    //       context.commit("setOrders", orders);
-    //       console.log("Orders Store:", orders);
-    //     } catch (error) {
-    //       context.commit("setError", error.message);
-    //     }
-    //   } else {
-    //     console.error('User data or userID not found in state');
-    //   }
-    // },
-
     async getOrder(context) {
-      // Fetch the userData from local storage
       const userDataJSON = localStorage.getItem('userData');
     
       if (userDataJSON) {
         const userData = JSON.parse(userDataJSON);
-    
-        // Access the userID
         const userID = userData.result.userID;    
-        // Now, you have userID available
         console.log('userID from local storage:', userID);
     
         try {
-          const response = await fetch(`${CapstoneUrl}order/${userID}`);
+          const response = await fetch(`${CapstoneUrl}orders/${userID}`);
           if (!response.ok) {
             throw Error("Failed to retrieve cart items");
           }
           const data = await response.json();
           console.log("Data:", data);
-          const orders = data.result;
-          // console.log("Orders From Store:", orders);
+          const orders = data.results;
           context.commit("setOrders", orders);
           console.log("Orders Store:", orders);
         } catch (error) {
@@ -485,38 +355,6 @@ export default createStore({
         });
       }
     },
-
-    // async loginUser(context, userData) {
-    //   try {
-    //     const response = await axios.post(`${CapstoneUrl}login`, userData, {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     });
-    
-    //     if (!response.data.token) {
-    //       throw new Error('Failed to login user.');
-    //     }
-    
-    //     const data = response.data;
-    //     const accessToken = data.token;
-    
-    //     localStorage.setItem('userData', JSON.stringify(data));
-    //     localStorage.setItem('accessToken', accessToken);
-    
-    //     context.commit('setUser', data.user);
-    //     context.commit('setToken', accessToken);
-    //     context.commit('setUserData', data);
-    //     window.location.reload();
-        
-    //     return data;
-    //   } catch (error) {
-    //     console.error('Error logging in user:', error);
-    //     context.commit('setError', error.message);
-    //     throw error;
-    //   }
-    // },
-
     async loginUser(context, userData) {
       try {
         const response = await axios.post(`${CapstoneUrl}login`, userData, {
@@ -531,25 +369,16 @@ export default createStore({
     
         const data = response.data;
         const accessToken = data.token;
-    
-        // Store user data and access token in localStorage
         console.log('userData in loginUser:', data);
         console.log('accessToken in loginUser:', accessToken);
         localStorage.setItem('userData', JSON.stringify(data));
         localStorage.setItem('accessToken', accessToken);
-    
-        // Commit mutations to set user-related state in Vuex
         context.commit('setUser', data.user);
         context.commit('setToken', accessToken);
         context.commit('setUserData', data);
-    
-        // Assuming that you have an isLoggedIn mutation, set it to true
         context.commit('isLoggedIn', true);
-
         context.dispatch('getOrder');
-    
-        // Refresh the page to reflect the user's logged-in status
-        // window.location.reload();  
+        window.location.reload();  
         return data;
       } catch (error) {
         console.error('Error logging in user:', error);
