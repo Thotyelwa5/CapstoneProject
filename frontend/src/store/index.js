@@ -31,10 +31,8 @@ export default createStore({
     const orderItem = state.orders.find(item => item.bookID === bookID);
   
     if (orderItem) {
-      // If the item is already in the cart, update its quantity
       orderItem.quantity += quantity;
     } else {
-      // If the item is not in the cart, add it
       const newItem = {
         bookID: bookID,
         quantity: quantity,
@@ -140,16 +138,19 @@ export default createStore({
   },
   actions: {
     //======logout
-    logout(context) {
-      context.commit("setToken", null);
-      context.commit("setUserData", null);
-      context.commit("setUserRole", null);
+    logout({commit}) {
+      //context.commit("setToken", null);
+      //context.commit("setUserData", null);
+      //context.commit("setUserRole", null);
       // Clear local storage
-      localStorage.removeItem('userData');
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem("userData");
+      localStorage.removeItem("accessToken");
+      commit("clearUser")
       // Clear cookies
-      Cookies.remove("userToken", { path: "/" });
-      Cookies.remove("userData", { path: "/" });
+      //Cookies.remove("userToken", { path: "/" });
+//Cookies.remove("userData", { path: "/" });
+// Cookies.remove("userData");
+// Cookies.remove("userToken");
       window.location.reload();
     },
 
@@ -223,7 +224,7 @@ export default createStore({
             throw Error("Failed to retrieve cart items");
           }
           const data = await response.json();
-          console.log(data);
+          console.log("Data:", data);
           const orders = data.results;
           context.commit("setorders", orders);
           console.log(orders);
@@ -359,6 +360,7 @@ export default createStore({
         context.commit('setUser', data.user);
         context.commit('setToken', accessToken);
         context.commit('setUserData', data);
+        window.location.reload();
         
         return data;
       } catch (error) {

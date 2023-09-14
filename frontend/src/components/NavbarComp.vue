@@ -21,12 +21,14 @@
                 <li class="mx-3"><router-link class="text" to="/user">Profile</router-link></li>
                 <li class="mx-3"><router-link class="text" to="/admin">Admin</router-link></li>
                 </ul>
-                <div class="d-flex login-signup" v-if="isLoggedIn">
-                  <button @click="logout">Logout</button>
-                </div>
+                <!-- <div class="d-flex login-signup" v-if="!isLoggedIn">
+                  <button  v-else @click="logout">Logout</button>
+                </div> -->
                 <div class="d-flex login-signup">
-                  <li class="mx-3"><router-link :to="{ name: 'login' }" class="login-button" v-if="!isLoggedIn">Login</router-link></li>
-                <li class="mx-3"><router-link :to="{ name: 'register' }" class="join-button" v-if="!isLoggedIn">Sign Up</router-link></li> 
+                  <!-- <li class="mx-3"><router-link :to="{ name: 'login' }" class="login-button" v-if="!isLoggedIn">Login</router-link></li> -->
+                  <router-link class="login-button mx-3" v-if="!isLoggedIn" to="/login">Login</router-link>
+                  <button v-else @click="logout">Logout</button>
+                  <li class="mx-3"><router-link :to="{ name: 'register' }" class="join-button" v-if="!isLoggedIn">Sign Up</router-link></li> 
                 </div>
             </div>   
           </div>   
@@ -37,18 +39,72 @@
 <script>
 export default {
   computed: {
+    // isLoggedIn() {
+    //   return this.$store.state.isLoggedIn;
+    // },
     isLoggedIn() {
-      return this.$store.state.isLoggedIn;
-    }
+      // Check if the user is logged in
+      const userDataJSON = localStorage.getItem("userData");
+      return !!userDataJSON;
+    },
+    userFirstName() {
+      // Get the user's first name from localStorage
+      const userDataJSON = localStorage.getItem("userData");
+      if (userDataJSON) {
+        const userData = JSON.parse(userDataJSON);
+        return userData.result.firstName || ""; 
+      }
+      return "";
+    },
+    userLastName() {
+      const userDataJSON = localStorage.getItem("userData");
+      if (userDataJSON) {
+        const userData = JSON.parse(userDataJSON);
+        return userData.result.lastName || "";
+      }
+      return "";
+    },
   },
-
   methods: {
     logout() {
-      this.$store.dispatch('logout')
+      this.$store.dispatch("logout");
+      localStorage.removeItem("userData");
+      this.$router.push("/home");
       window.location.reload();
-    }
+    },
   },
-};
+  //   isLoggedIn() {
+     
+  //     const userDataJSON = localStorage.getItem("userData");
+  //     return !!userDataJSON;
+  //     // window.location.reload();
+  //   },
+  //   userFirstName() {
+     
+  //     const userDataJSON = localStorage.getItem("userData");
+  //     if (userDataJSON) {
+  //       const userData = JSON.parse(userDataJSON);
+  //       return userData.result.firstName || ""; 
+  //     }
+  //     return "";
+  //   },
+  //   userLastName() {
+  //     const userDataJSON = localStorage.getItem("userData");
+  //     if (userDataJSON) {
+  //       const userData = JSON.parse(userDataJSON);
+  //       return userData.result.lastName || "";
+  //     }
+  //     return "";
+  //   },
+
+  // methods: {
+  //   logout() {
+  //     this.$store.dispatch('logout')
+  //     window.location.reload();
+  //   }
+  // },
+  // }
+  }
 
 </script>
   
