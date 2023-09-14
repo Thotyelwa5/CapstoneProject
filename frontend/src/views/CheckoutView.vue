@@ -124,17 +124,20 @@ export default {
 <script>
 export default {
   computed: {
-        orders() {
+    orders() {
       return this.$store.state.orders;
     }
   },
 
   methods: {
-  async getUserID() {
+    async getUserID() {
       const userData = JSON.parse(localStorage.getItem('userData'));
       if (userData && userData.result && userData.result.userID) {
         const userID = userData.result.userID;
+        console.log("Cart userID", userID); 
         await this.$store.dispatch("getOrder", userID);
+        console.log("orders:", this.$store.state.orders);
+        console.log("Type of orders:", typeof this.$store.state.orders);
       } else {
         console.error('User data or userID not found in local storage');
       }
@@ -145,32 +148,22 @@ export default {
     },
 
     decreaseQuantity(item) {
-  if (item.quantity > 1) {
-    item.quantity--;
-  }
-},
-increaseQuantity(item) {
-  item.quantity++;
-},
-
-    // async addToCart(productID, quantity) {
-    //   await this.$store.dispatch("addToCart", { productID, quantity });
-    // },
-
-    // async removeFromCart(cartID) {
-    //   await this.$store.dispatch("removeFromCart", cartID);
-    // },
+      if (item.quantity > 1) {
+        item.quantity--;
+      }
+    },
+    increaseQuantity(item) {
+      item.quantity++;
+    },
 
     deleteItem(orderID) {
-          console.log('Deleting item with orderID:', orderID);
-          this.$store.dispatch("removeFromCart", orderID);
-      }
+      console.log('Deleting item with orderID:', orderID);
+      this.$store.dispatch("removeFromCart", orderID);
+    }
   },
 
-  created() {
-    this.getUserID();
-    console.log("orders:",this.$store.state.orders);
-    console.log("Type of orders:", typeof this.$store.state.orders);
+  async created() {
+    await this.getUserID();
   }
 };
 </script>

@@ -62,7 +62,7 @@
                       <div class="d-flex flex-column mt-4">
                         <button
                           class="btn btn-outline-primary btn-sm mt-2"
-                          @click="addToCart(book.id, 1)"
+                          @click="addToCart(book.bookID, 1)"
                         >
                           Add to cart
                         </button>
@@ -96,31 +96,37 @@ export default {
     //   this.$store.dispatch("addToCart", bookID, quantity);
     //   this.$router.push("/cart");
     // },
-    async addToCart(userID,bookID, quantity) {
-  try {
-    const userDataJSON = localStorage.getItem("userData");
-    if (userDataJSON) {
-      const userData = JSON.parse(userDataJSON);
-      const userID = userData.result.userID;
-      console.log("USER ID:", userID);
-      const Orders = {
-        bookID: bookID, 
-        userID: userID,
-        quantity: quantity, 
-      };
-      console.log("BOOK ID:", bookID); 
-      console.log("QUANTITY:", quantity);
+//     async addToCart(userID,bookID, quantity) {
+//   try {
+//     const userDataJSON = localStorage.getItem("userData");
+//     if (userDataJSON) {
+//       const userData = JSON.parse(userDataJSON);
+//       const userID = userData.result.userID;
+//       console.log("USER ID:", userID);
+//       const Orders = {
+//         bookID: bookID, 
+//         userID: userID,
+//         quantity: quantity, 
+//       };
+//       console.log("BOOK ID:", bookID); 
+//       console.log("QUANTITY:", quantity);
       
-    }
-  } catch (error) {
-    console.error("Error adding to cart:", error);
-    sweet({
-      icon: "error",
-      title: "Error",
-      text: "An error occurred while adding the book to your cart.",
-    });
-  }
-},
+//     }
+//   } catch (error) {
+//     console.error("Error adding to cart:", error);
+//     sweet({
+//       icon: "error",
+//       title: "Error",
+//       text: "An error occurred while adding the book to your cart.",
+//     });
+//   }
+// },
+addToCart(bookID, quantity) {
+  console.log("Adding:", bookID);
+  // this.$router.push("/cart");
+  console.log("Book Data:", this.book);
+  this.$store.dispatch("addToCart", {bookID, quantity})
+}
 
     // async addToCart() {
     //   try {
