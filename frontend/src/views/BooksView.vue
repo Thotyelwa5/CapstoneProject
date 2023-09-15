@@ -14,13 +14,20 @@ export default {
     SpinnerComp,
     CardComp
   },
+  data() {
+    return {
+      selectedCategory: 'all'
+    };
+  },
   computed: {
-    filteredBooks() {
-      return this.$store.state.filteredBooks;
-    },
     books() {
       return this.$store.state.books;
     },
+  },
+  methods: {
+    filterByCategory(category) {
+      this.selectedCategory = category;
+    }
   },
   mounted() {
     this.$store.dispatch("fetchBooks");
@@ -28,5 +35,9 @@ export default {
 };
 </script>
 
+
 <style scoped>
+div{
+  margin-top: 10px;
+}
 </style>

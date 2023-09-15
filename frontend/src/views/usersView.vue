@@ -1,27 +1,26 @@
 <template>
   <div>
-    <div class="wrapper" v-if="user">
+    <div class="wrapper" v-if="user.result" :key="user.result.userID">
       <div class="card">
         <div class="card-body">
           <div class="row">
             <div class="col col-sm-4 left">
               <div class="img">
-                <img :src="user.profileUrl" alt="User Profile" />
-                <i class="fa fa-user"></i>
+                <img :src="user.result.profileUrl" alt="User Profile" style="height:100px; border-radius:50%" />
               </div>
-              <h4>{{ user.firstName }}</h4>
-              <p>{{ user.lastName }}</p>
-              <p>{{ user.gender }}</p>
-              <p>{{ user.userRole }}</p>
+              <h4>Name : {{ user.result.firstName }}</h4>
+              <p>lastName: {{ user.result.lastName }}</p>
+              <p> gender:{{ user.result.gender }}</p>
+              <p>userRole: {{ user.result.userRole }}</p>
             </div>
             <div class="col col-sm-8 right">
               <div class="container">
-                <h4>{{ user.userDOB }}</h4>
-                <p>{{ user.emailAdd }}</p>
-                <p>{{ user.userPass }}</p>
+                <h4>DOB:  {{ user.result.userDOB }}</h4>
+                <p>emailAdd:  {{ user.result.emailAdd }}</p>
+                <p> userPass:  {{ user.result.userPass }}</p>
                 <div class="action-buttons">
-                  <button class="edit" v-if="loginForm"><i class="fa fa-pencil"></i></button>
-                  <button class="delete" v-if="loginForm"><i class="fa fa-trash"></i></button>
+                  <button class="edit"><i class="fa fa-pencil"></i></button>
+                  <button class="delete"><i class="fa fa-trash"></i></button>
                 </div>
               </div>
             </div>
@@ -39,7 +38,7 @@ export default {
       return this.$route.params.userID;
     },
     user() {
-      return this.$store.state.user;
+      return this.$store.state.user || JSON.parse(localStorage.getItem("userData"));
     },
   },
   mounted() {
@@ -49,12 +48,12 @@ export default {
 };
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Exo+2&family=Lora:ital,wght@0,700;1,500&family=Montserrat:ital,wght@1,100&family=Playfair+Display&display=swap');
 html,body {
     height: 100%;
     padding: 0;
     margin: 0;
     font-size: 16px;
-    font-family: 'Poppins', sans-serif;
   }
   
   .left .img,
@@ -78,12 +77,16 @@ html,body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #e6e6e6;
+   
   }
   
   .card {
     border-radius: .25rem;
     border: none;
+    width: 600px;
+    height: 300px
+  }
+  .img{
     width: 600px;
     height: 300px
   }
@@ -93,7 +96,7 @@ html,body {
   }
   
   .left {
-    background: #7386D5;
+    background: #FFE5AD;
     text-align: center;
     max-width: 200px;
     max-height: 300px;
@@ -127,17 +130,14 @@ html,body {
     margin-top: .94rem;
   }
   
-  .left p {
-    font-size: .75rem;
-  }
   
   .left button {
     font-size: .75rem;
     border-radius: 1.1rem;
     padding: .25rem 1.25rem;
     border: none;
-    background: #17A2B8;
-    color: #fff;
+    background: #FFE5AD;
+    color: black;
     position: absolute;
     bottom: 1.25rem;
     left: 50%;
@@ -156,9 +156,6 @@ html,body {
     font-size: 1.25rem
   }
   
-  .right p {
-    line-height: .5;
-  }
   
   .right h4:not(:first-of-type) {
     margin-top: 2.5rem;

@@ -38,24 +38,24 @@
 
 <script>
 import axios from "axios";
-import UsersComp from "@/components/UsersComp.vue"
+import UsersComp from "@/components/UsersComp.vue";
 import AddBookComp from "@/components/AddBookComp.vue";
-import updateBookComp from '@/components/updateBookComp.vue'
+import updateBookComp from "@/components/updateBookComp.vue";
 
 export default {
   name: "AdminBookTable",
-  components: {UsersComp, AddBookComp, updateBookComp},
+  components: { UsersComp, AddBookComp, updateBookComp },
   computed: {
     users() {
-      return this.$store.state.users; 
+      return this.$store.state.users;
     },
     books() {
       return this.$store.state.books;
     },
   },
   mounted() {
-    this.$store.dispatch('fetchUsers');
-    this.$store.dispatch('fetchBooks');
+    this.$store.dispatch("fetchUsers");
+    this.$store.dispatch("fetchBooks");
   },
   methods: {
     async fetchBooks() {
@@ -78,7 +78,7 @@ export default {
         console.error("Error fetching users:", error);
       }
     },
-  
+
     async deleteBook(bookID) {
       const confirmed = confirm("Are you sure you want to delete this book?");
       if (confirmed) {
@@ -93,8 +93,8 @@ export default {
     async updateBook(bookID) {
       this.$router.push({
         path: "/updateBookComp",
-        params: {id: bookID}
-      })
+        params: { id: bookID },
+      });
       const confirmed = confirm("Book succesfully edited");
       if (confirmed) {
         try {
@@ -110,6 +110,7 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Exo+2&family=Lora:ital,wght@0,700;1,500&family=Montserrat:ital,wght@1,100&family=Playfair+Display&display=swap");
 .table-container {
   overflow-x: auto;
 }
@@ -119,22 +120,21 @@ export default {
   border-collapse: collapse;
 }
 
-.table th, .table td {
+.table th,
+.table td {
   border: none;
   padding: 10px;
   text-align: left;
 }
 
 .table th {
-  background-color: #f2f2f2; 
+  background-color: #f2f2f2;
 }
 
 .book-image {
   max-width: 60px;
   height: 60px;
-  
 }
-
 
 .btn {
   padding: 5px 10px;
@@ -146,15 +146,16 @@ export default {
 }
 
 .btn-edit {
-  background-color: #007bff; 
+  background-color: #007bff;
 }
 
 .btn-delete {
-  background-color: #dc3545; 
+  background-color: #dc3545;
 }
 
 @media (max-width: 768px) {
-  .table th, .table td {
+  .table th,
+  .table td {
     font-size: 14px;
   }
 }

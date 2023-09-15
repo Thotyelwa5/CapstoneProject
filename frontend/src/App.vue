@@ -19,9 +19,10 @@ export default {
 
 #app {
   font-family: 'Anton', sans-serif;
-  font-family: 'Lora', serif;
-  font-family: 'Montserrat', sans-serif;
-  font-family: 'Playfair Display', serif;
+ font-family: 'Exo 2', sans-serif;
+ font-family: 'Lora', serif;
+ font-family: 'Montserrat', sans-serif;
+ font-family: 'Playfair Display', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

@@ -29,7 +29,7 @@ const routes = [
     component: () => import('../views/ContactView.vue')
   },
   {
-    path: '/admin',
+    path: '/admin/',
     name: 'admin',
     component: () => import('../views/AdminVue.vue')
   },

@@ -1,36 +1,40 @@
 <template>
   <div>
-    <h2>See Our Book Collection</h2>
-    <div v-for="book in filteredBooks" :key="book.bookID" class="col mb-4">
-      <div class="d-flex justify-content-between mb-3">
-        <div>
-          <label for="sortByPrice">Sort by Price:</label>
-          <select v-model="sortByPrice" id="sortByPrice">
-            <option value="all">All</option>
-            <option value="asc">Low to High</option>
-            <option value="desc">High to Low</option>
-          </select>
-        </div>
-        <div>
-          <label for="filtercategory">Filter by Category:</label>
-          <select v-model="filterCategory" id="filterCategory">
-            <option value="all">All</option>
-            <!-- Add options for categories based on your data -->
-            <option value="Kids">Kids</option>
-            <option value="Adults">Adults</option>
-            <option value="Catering">Catering</option>
-
-            <!-- Add more options as needed -->
-          </select>
-        </div>
-      </div>
+    <h2 class="hey">See Our Book Collection</h2>
+    <div class="search box">
+      <button class="btn-search"><i class="fas fa-search"></i></button>
+      <input type="text" v-model="searchQuery"  class="input-search" placeholder="Type to Search...">
+    </div>
+    <div>
+      <label for="filtercategory">Filter by Category:</label>
+      <select v-model="filterCategory" id="filterCategory">
+        <option value="all">All</option>
+        <option value="Kids">Kids</option>
+        <option value="Adults">Adults</option>
+        <option value="Catering">Catering</option>
+      </select>
+    </div>
+    <div>
+      <label for="sortByPrice">Sort by Price:</label>
+      <select v-model="sortByPrice" id="sortByPrice">
+        <option value="all">All</option>
+        <option value="asc">Low to High</option>
+        <option value="desc">High to Low</option>
+      </select>
+    </div>
+    <div v-for="book in filteredBooks" :key="book.bookID" class="col">
+      <div class="d-flex justify-content-between"></div>
     </div>
 
     <div>
       <section>
         <div class="container py-5 mt-4">
           <div class="row row-cols-1 row-cols-md-4">
-            <div v-for="book in books" :key="book.bookID" class="col mb-4">
+            <div
+              v-for="book in fetchedBooks"
+              :key="book.bookID"
+              class="col mb-4"
+            >
               <div
                 class="card h-100"
                 style="
@@ -80,7 +84,11 @@
                   <div
                     class="d-flex justify-content-between align-items-center pb-2 mb-1"
                   >
-                    <router-link to="/Single">See more</router-link>
+                    <router-link
+                      class="button"
+                      :to="{ name: 'Single', params: { bookID: book.bookID } }"
+                      >See more</router-link
+                    >
                   </div>
                 </div>
               </div>
@@ -91,14 +99,16 @@
     </div>
   </div>
 </template>
+
 <script>
 import CardComp from "@/components/CardComp.vue";
 import Single from "@/components/SingleComp.vue";
+import BooksViewVue from '../views/BooksView.vue';
 export default {
   data() {
     return {
-      sortByPrice: "", // You can set this to 'asc' or 'desc'
-      filtercategory: "", // The selected category for filtering
+      sortByPrice: "",
+      filterCategory: "", 
     };
   },
 
@@ -108,15 +118,15 @@ export default {
   },
   props: ["books"],
   computed: {
-    books() {
+    fetchedBooks() {
       return this.$store.state.books;
     },
     filteredBooks() {
-      let filtered = this.books;
+      let filtered = this.fetchedBooks;
 
       if (this.filterCategory) {
         filtered = filtered.filter(
-          (book) => book.category === this.filtercategory
+          (book) => book.category === this.filterCategory
         );
       }
 
@@ -124,8 +134,13 @@ export default {
         filtered = filtered.sort((a, b) => a.amount - b.amount);
       } else if (this.sortByPrice === "desc") {
         filtered = filtered.sort((a, b) => b.amount - a.amount);
+      
       }
-
+      if(this.searchQuery) {
+        BooksViewVue = BooksViewVue.filter(book =>
+          book.bookTitle.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
       return filtered;
     },
   },
@@ -134,10 +149,26 @@ export default {
   },
 };
 </script>
+
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Exo+2&family=Lora:ital,wght@0,700;1,500&family=Montserrat:ital,wght@1,100&family=Playfair+Display&display=swap");
 .book-image {
   height: 300px;
   transition: transform 0.2s;
+}
+.button {
+  background-color: #3e001f;
+  text-decoration: none;
+  color: white;
+  box-shadow: 1px 2px;
+}
+.button:hover {
+  transform: scale(1.1);
+  background-color: transparent;
+  color: #3e001f;
+}
+.hey {
+  margin-top: 60px;
 }
 
 .book-image:hover {

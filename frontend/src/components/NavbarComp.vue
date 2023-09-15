@@ -1,6 +1,5 @@
 
-
-  <template>
+ <template>
     <div>
       <nav class="navbar navbar-expand-lg bg-body-tertiary justify-content-center fixed-top">
         <div class="container-fluid ">
@@ -68,15 +67,19 @@ export default {
 </script>
   
   <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Lora:ital,wght@1,500&family=Montserrat:ital,wght@1,100&family=Playfair+Display&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Exo+2&family=Lora:ital,wght@0,700;1,500&family=Montserrat:ital,wght@1,100&family=Playfair+Display&display=swap');
   .login-button{
     text-align: right;
   }
   .text{
     text-decoration: none;
+    color:black;
+  }
+  .text:hover{
+    background-color: antiquewhite;
   }
   .navbar{
-    background-color: #FFE5AD;
+    background-color: #FFE5AD !important;
   }
   .nav-links{
     display: flex;
@@ -124,5 +127,13 @@ export default {
     background-color: transparent;
     border: 1.5px solid #f2f5f7;
     transition: all ease-in-out 350ms;
+  }
+  #button {
+    font-size: 22px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    position: relative;
+    cursor: pointer;
   }
   </style>

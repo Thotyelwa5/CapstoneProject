@@ -1,11 +1,11 @@
-import { createStore } from 'vuex'
-import axios from 'axios'
-import sweet from 'sweetalert'
-import router from '@/router'
+import { createStore } from "vuex";
+import axios from "axios";
+import sweet from "sweetalert";
+import router from "@/router";
 import Cookies from "js-cookie";
-import { useCookies } from 'vue3-cookies'
-import authUser from '@/services/AuthenticateUser'
-const CapstoneUrl = "https://capstone-4p7c.onrender.com/"
+import { useCookies } from "vue3-cookies";
+import authUser from "@/services/AuthenticateUser";
+const CapstoneUrl = "https://capstone-4p7c.onrender.com/";
 
 export default createStore({
   state: {
@@ -15,6 +15,7 @@ export default createStore({
     books: null,
     book: null,
     spinner: false,
+    userRole: null,
     msg: null,
     user: null,
     userData: null,
@@ -23,93 +24,96 @@ export default createStore({
     selectedAuthor: null,
   },
   mutations: {
-   setOrders(state, orders){
-   state.orders = orders
-   localStorage.setItem('orders', JSON.stringify(state.orders))
-   },
-   addToCart(state, { bookID, quantity }) {
-    const orderItem = state.orders.find(item => item.bookID === bookID);
-  
-    if (orderItem) {
-      orderItem.quantity += quantity;
-    } else {
-      const newItem = {
-        bookID: bookID,
-        quantity: quantity,
-      };
-      state.orders.push(newItem);
-    }
-  
-    localStorage.setItem('order', JSON.stringify(state.orders));
-  },  
+    setUserRole(state, userRole){
+      state.userRole = userRole
+    },
+    setOrders(state, orders) {
+      state.orders = orders;
+      localStorage.setItem("orders", JSON.stringify(state.orders));
+    },
+    addToCart(state, { bookID, quantity }) {
+      const orderItem = state.orders.find((item) => item.bookID === bookID);
 
-  updateQuantity(state, { orderID, quantity }) {
-    const item = state.orders.find(item => item.orderID === orderID);
+      if (orderItem) {
+        orderItem.quantity += quantity;
+      } else {
+        const newItem = {
+          bookID: bookID,
+          quantity: quantity,
+        };
+        state.orders.push(newItem);
+      }
 
-    if (item) {
-      item.quantity = quantity;
-      localStorage.setItem('order', JSON.stringify(state.orders));
-    }
-  },
+      localStorage.setItem("order", JSON.stringify(state.orders));
+    },
 
-  removeFromCart(state, orderID) {
-    state.orders = state.orders.filter(item => item.orderID !== orderID);
-  },
+    updateQuantity(state, { orderID, quantity }) {
+      const item = state.orders.find((item) => item.orderID === orderID);
+
+      if (item) {
+        item.quantity = quantity;
+        localStorage.setItem("order", JSON.stringify(state.orders));
+      }
+    },
+
+    removeFromCart(state, orderID) {
+      state.orders = state.orders.filter((item) => item.orderID !== orderID);
+    },
     setUser(state, user) {
-      state.user = user
+      state.user = user;
     },
     setUser(state, user) {
       state.user = user;
       // state.isLoggedIn = true;
     },
-    setUserData(state, userData){
+    setUserData(state, userData) {
       state.userData = userData;
-      if (userData){
-        const userDataForCookie ={
+      if (userData) {
+        const userDataForCookie = {
           msg: userData.msg,
           token: userData.token,
-          result: userData.result
+          result: userData.result,
         };
 
         Cookies.set("userData", JSON.stringify(userDataForCookie), {
-          expires : 1,
+          expires: 1,
           path: "/",
           secure: true,
-          sameSite: "None"
-        })
+          sameSite: "None",
+        });
       }
     },
-    setToken(state, token){
-      state.token = token ;
-      Cookies.set("userToken", token ,{
-        expires : 1,
-          path: "/",
-          secure: true,
-          sameSite: "None"
+    setToken(state, token) {
+      state.token = token;
+      Cookies.set("userToken", token, {
+        expires: 1,
+        path: "/",
+        secure: true,
+        sameSite: "None",
       });
-      state.isLoggedIn = true; 
+      state.isLoggedIn = true;
     },
-   
+
     setUsers(state, users) {
-      state.users = users
+      state.users = users;
     },
     setBooks(state, books) {
-      state.books = books
+      state.books = books;
     },
     setBook(state, book) {
-      state.book = book
+      state.book = book;
     },
     setSpinner(state, value) {
-      state.spinner = value
+      state.spinner = value;
     },
     setToken(state, token) {
-      state.token = token
+      state.token = token;
     },
     setMsg(state, msg) {
-      state.msg = msg
+      state.msg = msg;
     },
     setOrder(state, bookID) {
-      state.cart.push(bookID)
+      state.cart.push(bookID);
     },
     setUser(state, user) {
       state.user = user;
@@ -121,8 +125,8 @@ export default createStore({
     setDeletionStatus(state, status) {
       state.deletionStatus = status;
     },
-    setorders(state, orders){
-      state.orders = orders
+    setorders(state, orders) {
+      state.orders = orders;
     },
     setUpdateStatus(state, status) {
       state.setUpdateStatus = status;
@@ -132,28 +136,28 @@ export default createStore({
       state.token = null;
       state.isLoggedIn = false;
     },
-    setError(state, error){
-      state.error= error
-    }
+    setError(state, error) {
+      state.error = error;
+    },
   },
   actions: {
     //======logout
-    logout({commit}) {
+    logout({ commit }) {
       localStorage.removeItem("userData");
       localStorage.removeItem("accessToken");
-      commit("clearUser")
-   
+      commit("clearUser");
+
       window.location.reload();
     },
 
     async addToCart(context, { bookID, quantity }) {
       try {
-        const userDataJSON = localStorage.getItem('userData');
+        const userDataJSON = localStorage.getItem("userData");
         if (userDataJSON) {
           const userData = JSON.parse(userDataJSON);
           const userID = userData.result.userID;
           console.log("User ID:", userID);
-    
+
           const response = await fetch(`${CapstoneUrl}add-orders/${userID}`, {
             method: "POST",
             headers: {
@@ -161,33 +165,36 @@ export default createStore({
             },
             body: JSON.stringify({ bookID, quantity }),
           });
-    
+
           if (!response.ok) {
-            throw new Error(`Failed to add item to cart. Status: ${response.status}`);
+            throw new Error(
+              `Failed to add item to cart. Status: ${response.status}`
+            );
           }
-    
+
           const data = await response.json();
-          const orders = context.state.orders.find(item => item.bookID === bookID);
+          const orders = context.state.orders.find(
+            (item) => item.bookID === bookID
+          );
           console.log(orders);
-    
+
           if (orders) {
             orders.quantity += quantity;
           } else {
-            
             const newItem = {
               bookID: bookID,
               quantity: quantity,
             };
-            context.commit("addToCart", newItem); 
+            context.commit("addToCart", newItem);
           }
         } else {
-          console.error('User data not found in local storage');
+          console.error("User data not found in local storage");
           context.commit("setError", "User data not found in local storage");
         }
       } catch (error) {
         context.commit("setError", error.message);
       }
-    },    
+    },
 
     async updateCartQuantity(context, { orderID, quantity }) {
       try {
@@ -198,41 +205,44 @@ export default createStore({
           },
           body: JSON.stringify({ quantity }),
         });
-  
+
         if (!response.ok) {
           throw Error("Failed to update item quantity in cart");
         }
-  
+
         context.commit("updateQuantity", { orderID, quantity });
       } catch (error) {
         context.commit("setError", error.message);
       }
     },
-  
-    async removeFromOrders(context, orderID) {
+
+    async deleteOrder(context, orderID) {
       const userID = context.state.userData.result.userID;
       console.log("User ID:", userID, "order ID:", orderID);
       try {
-        const response = await fetch(`${CapstoneUrl}order/${userID}/${orderID}`, {
-          method: "DELETE",
-        });
+        const response = await fetch(
+          `${CapstoneUrl}order/${userID}/${orderID}`,
+          {
+            method: "DELETE",
+          }
+        );
         if (!response.ok) {
           throw Error("Failed to remove item from cart");
         }
-        context.commit("removeFromOrders", orderID);
+        context.commit("deleteOrder", orderID);
       } catch (error) {
         context.commit("setError", error.message);
       }
     },
 
     async getOrder(context) {
-      const userDataJSON = localStorage.getItem('userData');
-    
+      const userDataJSON = localStorage.getItem("userData");
+
       if (userDataJSON) {
         const userData = JSON.parse(userDataJSON);
-        const userID = userData.result.userID;    
-        console.log('userID from local storage:', userID);
-    
+        const userID = userData.result.userID;
+        console.log("userID from local storage:", userID);
+
         try {
           const response = await fetch(`${CapstoneUrl}orders/${userID}`);
           if (!response.ok) {
@@ -247,20 +257,19 @@ export default createStore({
           context.commit("setError", error.message);
         }
       } else {
-        console.error('User data not found in local storage');
+        console.error("User data not found in local storage");
         context.commit("setError", "User data not found in local storage");
       }
     },
-    
- 
+
     // ============fetchBooks and a Book
     async fetchBooks(context) {
       try {
-        const { data } = await axios.get(`${CapstoneUrl}books`)
-        context.commit("setBooks", data.results)
+        const { data } = await axios.get(`${CapstoneUrl}books`);
+        context.commit("setBooks", data.results);
         console.log(data.results);
       } catch (e) {
-        context.commit("setMsg", "An error occurred.")
+        context.commit("setMsg", "An error occurred.");
       }
     },
     async fetchBook(context, bookID) {
@@ -271,17 +280,17 @@ export default createStore({
         context.commit("setMsg", "An error occurred.");
       }
     },
-     //==============DELETE A User
-     async deleteUser(context, userID) {
+    //==============DELETE A User
+    async deleteUser(context, userID) {
       try {
         context.commit("setDeletionStatus", null);
-        
+
         const response = await axios.delete(`${CapstoneUrl}user/${userID}`);
-        
+
         if (response.status !== 200) {
           throw new Error(`Failed to delete user. Status: ${response.status}`);
         }
-        
+
         context.commit("removeUser", userID);
         context.commit("setDeletionStatus", "success");
       } catch (error) {
@@ -293,13 +302,15 @@ export default createStore({
     async deleteBook(context, bookID) {
       try {
         context.commit("setDeletionStatus", null);
-        
+
         const response = await axios.delete(`${CapstoneUrl}books/${bookID}`);
-        
+
         if (response.status !== 200) {
-          throw new Error(`Failed to delete product. Status: ${response.status}`);
+          throw new Error(
+            `Failed to delete product. Status: ${response.status}`
+          );
         }
-        
+
         context.commit("removeBook", bookID);
         context.commit("setDeletionStatus", "success");
       } catch (error) {
@@ -311,9 +322,12 @@ export default createStore({
     async updateBook(context, updatedBookData) {
       try {
         context.commit("setUpdateStatus", null);
-    
-        const response = await axios.put(`${CapstoneUrl}books/${updatedBookData.bookID}`, updatedBookData);
-    
+
+        const response = await axios.put(
+          `${CapstoneUrl}books/${updatedBookData.bookID}`,
+          updatedBookData
+        );
+
         if (response.status === 200) {
           context.commit("updateBookInState", updatedBookData);
           context.commit("setUpdateStatus", "success");
@@ -325,8 +339,6 @@ export default createStore({
         context.commit("setUpdateStatus", "error");
       }
     },
-   
-    
 
     // =============register and login users
     async registerUser({ commit }, userData) {
@@ -359,53 +371,53 @@ export default createStore({
       try {
         const response = await axios.post(`${CapstoneUrl}login`, userData, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
-    
+
         if (!response.data.token) {
-          throw new Error('Failed to login user.');
+          throw new Error("Failed to login user.");
         }
-    
+
         const data = response.data;
         const accessToken = data.token;
-        console.log('userData in loginUser:', data);
-        console.log('accessToken in loginUser:', accessToken);
-        localStorage.setItem('userData', JSON.stringify(data));
-        localStorage.setItem('accessToken', accessToken);
-        context.commit('setUser', data.user);
-        context.commit('setToken', accessToken);
-        context.commit('setUserData', data);
-        context.commit('isLoggedIn', true);
-        context.dispatch('getOrder');
-        window.location.reload();  
+        console.log("userData in loginUser:", data);
+        console.log("accessToken in loginUser:", accessToken);
+        localStorage.setItem("userData", JSON.stringify(data));
+        localStorage.setItem("accessToken", accessToken);
+        context.commit("setUser", data.user);
+        context.commit("setToken", accessToken);
+        context.commit("setUserData", data);
+        context.commit("isLoggedIn", true);
+        context.dispatch("getOrder");
+        window.location.reload();
         return data;
       } catch (error) {
-        console.error('Error logging in user:', error);
-        context.commit('setError', error.message);
+        console.error("Error logging in user:", error);
+        context.commit("setError", error.message);
         throw error;
       }
-    },    
+    },
 
     //=============fetch users
     async fetchUsers(context) {
-      try{
-        const {data} = await axios.get(`${CapstoneUrl}users`)
-        context.commit("setUsers", data.results)
+      try {
+        const { data } = await axios.get(`${CapstoneUrl}users`);
+        context.commit("setUsers", data.results);
         console.log(data.results);
-      }catch(e){
-        context.commit("setMsg", "An error occured.")
+      } catch (e) {
+        context.commit("setMsg", "An error occured.");
       }
     },
     async fetchUser(context, userID) {
-      try{
-        const {data} = await axios.get(`${CapstoneUrl}user/${userID}`)
-        context.commit("setUser", data.results)
-        console.log(results);
-      }catch(e){
-        context.commit("setMsg", "An error occured.")
+      try {
+        const { data } = await axios.get(`${CapstoneUrl}user/${userID}`);
+        context.commit("setUser", data.result);
+        console.log(result);
+      } catch (e) {
+        context.commit("setMsg", "An error occured.");
       }
     },
   },
-  modules: {} 
-})
+  modules: {},
+});
