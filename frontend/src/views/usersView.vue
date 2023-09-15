@@ -1,32 +1,27 @@
 <template>
-    <div>
-      <div class="wrapper">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col col-sm-4 left">
-                <div class="img">
-                    <img v-if="user" :src="user.profileUrl" alt="User Profile" />
-                  <i class="fa fa-user"></i>
-                </div>
-                <h4 v-if="user">{{ user.firstName }}</h4>
-                <p v-if="user">{{ user.lastName }}</p>
-                <p v-if="user">{{ user.gender }}</p>
-                <p v-if="user">{{ user.userRole }}</p>
-                <button class="edit" v-if="loginForm"><i class="fa fa-pencil"></i></button>
-                <button class="delete" v-if="loginForm"><i class="fa fa-trash"></i></button>
-                <button class="logout" v-if="loginForm"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+  <div>
+    <div class="wrapper" v-if="user">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col col-sm-4 left">
+              <div class="img">
+                <img :src="user.profileUrl" alt="User Profile" />
+                <i class="fa fa-user"></i>
               </div>
-              <div class="col col-sm-8 right">
-                <div class="container">
-                  <h4 v-if="user">{{ user.userDOB }}</h4>
-                  <p v-if="user">{{ user.emailAdd }}</p>
-                  <p v-if="user">{{ user.userPass }}</p>
-                  <div class="action-buttons">
-                    <button class="edit" v-if="loginForm"><i class="fa fa-pencil"></i></button>
-                    <button class="delete" v-if="loginForm"><i class="fa fa-trash"></i></button>
-
-                  </div>
+              <h4>{{ user.firstName }}</h4>
+              <p>{{ user.lastName }}</p>
+              <p>{{ user.gender }}</p>
+              <p>{{ user.userRole }}</p>
+            </div>
+            <div class="col col-sm-8 right">
+              <div class="container">
+                <h4>{{ user.userDOB }}</h4>
+                <p>{{ user.emailAdd }}</p>
+                <p>{{ user.userPass }}</p>
+                <div class="action-buttons">
+                  <button class="edit" v-if="loginForm"><i class="fa fa-pencil"></i></button>
+                  <button class="delete" v-if="loginForm"><i class="fa fa-trash"></i></button>
                 </div>
               </div>
             </div>
@@ -34,22 +29,25 @@
         </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    computed: {
-      user() {
-        return this.$store.getters.getuserData;
-      },
-      userIsLoggedIn() {
-      return this.$store.state.loginForm;
-    },
-    },
-  };
-  </script>
-  
+  </div>
+</template>
 
+<script>
+export default {
+  computed: {
+    id() {
+      return this.$route.params.userID;
+    },
+    user() {
+      return this.$store.state.user;
+    },
+  },
+  mounted() {
+    const userID = this.$route.params.userID;
+    this.$store.dispatch("fetchUser", userID);
+  },
+};
+</script>
 <style scoped>
 html,body {
     height: 100%;
