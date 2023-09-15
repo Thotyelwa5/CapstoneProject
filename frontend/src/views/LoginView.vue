@@ -52,6 +52,7 @@ export default {
 
     if (data && data.token) {
       this.$store.commit("setToken", data.token);
+      this.$router.push("/");
       sweet({
         icon: 'success',
         title: 'Login Successful',

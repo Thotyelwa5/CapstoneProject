@@ -71,6 +71,9 @@ export default {
   .login-button{
     text-align: right;
   }
+  .active-link{
+    color:#213584
+  }
   .text{
     text-decoration: none;
     color:black;
